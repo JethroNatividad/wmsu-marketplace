@@ -1,19 +1,20 @@
 "use client";
 // pages/SignIn.tsx
-import React from "react";
+import React, { useEffect } from "react";
 import {
   LiteralUnion,
   RegisterOptions,
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { useRouter } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { doc, getDoc } from "firebase/firestore";
 
 type Inputs = {
   firstName: string;
-  MiddleName: string;
+  MiddleName?: string;
   lastName: string;
   department: string;
   preferredCampus?: string;
@@ -32,9 +33,6 @@ type ErrorMessages = {
 const errorMessages: ErrorMessages = {
   firstName: {
     required: "First Name is required",
-  },
-  MiddleName: {
-    required: "Middle Name is required",
   },
   lastName: {
     required: "Last Name is required",
@@ -59,6 +57,25 @@ const CompleteSignUp = () => {
     return <div>Error: User not found</div>;
   }
 
+  useEffect(() => {
+    const handleCompleteUser = async () => {
+      // Check if the user's email is verified
+      if (user.emailVerified) {
+        // Check if user has completed sign up, (added name, etc.)
+        // Redirect to /
+        const userRef = doc(db, "users", user.uid);
+        const userData = await getDoc(userRef);
+        if (userData.exists() && userData.data()?.completeSignUp) {
+          return router.push("/");
+        }
+      }
+    };
+
+    if (!loadingUser && !errorUser && user) {
+      handleCompleteUser();
+    }
+  }, [user, loadingUser, errorUser]);
+
   const router = useRouter();
 
   const {
@@ -70,9 +87,7 @@ const CompleteSignUp = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async ({}) => {
     try {
-      //   await createUserWithEmailAndPassword(auth, email, password);
-      //   // Redirect to verify email
-      //   return router.push("/verifyEmail");
+      const userRef = doc(db, "users", user.uid);
     } catch (error) {
       setError("root", {
         type: "server",
@@ -85,23 +100,30 @@ const CompleteSignUp = () => {
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
-          type="email"
-          placeholder="eh123456789@wmsu.edu.ph"
-          {...register("email", {
+          type="text"
+          placeholder="First Name"
+          {...register("firstName", {
             required: true,
-            pattern: /^[a-zA-Z0-9._%+-]+@wmsu\.edu\.ph$/,
           })}
         />
-        {errors.email && <p>{errorMessages.email[errors.email?.type]}</p>}
+        {errors.firstName && (
+          <p>{errorMessages.firstName[errors.firstName?.type]}</p>
+        )}
 
         <input
-          type="password"
-          placeholder="Password"
-          {...register("password", { required: true })}
+          type="text"
+          placeholder="Middle Name"
+          {...register("MiddleName")}
         />
 
-        {errors.password && (
-          <p>{errorMessages.password[errors.password?.type]}</p>
+        <input
+          type="text"
+          placeholder="Last Name"
+          {...register("lastName", { required: true })}
+        />
+
+        {errors.lastName && (
+          <p>{errorMessages.lastName[errors.lastName?.type]}</p>
         )}
 
         {errors.root?.type == "server" && <p>{errors.root.message}</p>}
