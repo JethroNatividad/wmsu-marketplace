@@ -9,6 +9,7 @@ import {
 } from "react-hook-form";
 import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 type Inputs = {
   email: string;
@@ -34,6 +35,8 @@ const errorMessages: ErrorMessages = {
 };
 
 const SignUp = () => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -43,11 +46,9 @@ const SignUp = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      await createUserWithEmailAndPassword(auth, email, password);
+      // Redirect to verify email
+      return router.push("/verifyEmail");
     } catch (error) {
       setError("root", {
         type: "server",
