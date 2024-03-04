@@ -2,9 +2,10 @@
 // pages/verify.tsx
 import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { useRouter } from "next/navigation";
 import { sendEmailVerification } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 
 const VerifyEmail = () => {
   const [user, loadingUser, errorUser] = useAuthState(auth);
@@ -15,8 +16,15 @@ const VerifyEmail = () => {
       if (user) {
         // Check if the user's email is verified
         if (user.emailVerified) {
-          // Redirect to the home page or another appropriate page
-          router.push("/");
+          // Check if user has completed sign up, (added name, etc.)
+          // Redirect to completeSignUp if not
+          const userRef = doc(db, "users", user.uid);
+          const userData = await getDoc(userRef);
+          if (!userData.exists || !userData.data()?.completeSignUp) {
+            return router.push("/completeSignUp");
+          } else {
+            return router.push("/");
+          }
         } else {
           // Send a verification email
           sendEmailVerification(user);
@@ -46,7 +54,7 @@ const VerifyEmail = () => {
       <div>
         <p>
           Please verify your email. A verification email has been sent to your
-          email address.
+          email address. Reload this page after verifying your email.
         </p>
         <button onClick={() => sendEmailVerification(user)}>
           Resend Verification Email
