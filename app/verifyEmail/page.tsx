@@ -1,8 +1,9 @@
+"use client";
 // pages/verify.tsx
 import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { sendEmailVerification } from "firebase/auth";
 
 const VerifyEmail = () => {
