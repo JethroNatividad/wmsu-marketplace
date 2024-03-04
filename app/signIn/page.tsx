@@ -39,7 +39,7 @@ const SignIn = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async ({ email }) => {
     const actionCodeSettings = {
-      url: `${window.location.origin}/authRedirect`,
+      url: `http://localhost:3000/authRedirect`,
       handleCodeInApp: true,
     };
     try {

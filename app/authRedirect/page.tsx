@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { auth, db } from "../../firebase";
 import { signInWithEmailLink } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
@@ -28,6 +28,7 @@ const AuthRedirect = () => {
         }
       } catch (error) {
         console.error("Error during sign-in", error);
+        router.push("/signIn");
       }
     };
 
