@@ -7,8 +7,10 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { doc, getDoc } from "firebase/firestore";
 
 type Inputs = {
   email: string;
@@ -34,6 +36,7 @@ const errorMessages: ErrorMessages = {
 };
 
 const SignIn = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -43,7 +46,20 @@ const SignIn = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      //   Check if email verified
+      if (!user.emailVerified) {
+        return router.push("/verifyEmail");
+      }
+
+      // Check if user has completed sign up, (added name, etc.)
+      const userRef = doc(db, "users", user.uid);
+      const userData = await getDoc(userRef);
+      if (!userData.exists || !userData.data()?.completeSignUp) {
+        return router.push("/completeSignUp");
+      } else {
+        return router.push("/");
+      }
     } catch (error) {
       setError("root", {
         type: "server",
