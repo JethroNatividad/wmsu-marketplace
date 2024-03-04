@@ -1,14 +1,12 @@
 "use client";
 // pages/verify.tsx
 import React, { useEffect } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "../../firebase";
 import { useRouter } from "next/navigation";
 import { sendEmailVerification } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import useUserState from "@/hooks/useUserState";
 
 const VerifyEmail = () => {
-  const [user, loadingUser, errorUser] = useAuthState(auth);
+  const { user, loading, errorUser, userData } = useUserState();
   const router = useRouter();
 
   useEffect(() => {
@@ -18,9 +16,7 @@ const VerifyEmail = () => {
         if (user.emailVerified) {
           // Check if user has completed sign up, (added name, etc.)
           // Redirect to completeSignUp if not
-          const userRef = doc(db, "users", user.uid);
-          const userData = await getDoc(userRef);
-          if (!userData.exists || !userData.data()?.completeSignUp) {
+          if (!userData?.completeSignUp) {
             return router.push("/completeSignUp");
           } else {
             return router.push("/");
@@ -32,12 +28,12 @@ const VerifyEmail = () => {
       }
     };
 
-    if (!loadingUser && !errorUser) {
+    if (!loading && !errorUser) {
       checkEmailVerification();
     }
-  }, [user, loadingUser, errorUser]);
+  }, [user, loading, errorUser, userData]);
 
-  if (loadingUser) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
