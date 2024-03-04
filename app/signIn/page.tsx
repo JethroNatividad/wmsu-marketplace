@@ -8,7 +8,7 @@ import {
   useForm,
 } from "react-hook-form";
 import { auth } from "../../firebase";
-import { sendSignInLinkToEmail } from "firebase/auth";
+import { AuthError, sendSignInLinkToEmail } from "firebase/auth";
 
 type Inputs = {
   email: string;
@@ -33,6 +33,7 @@ const SignIn = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<Inputs>();
 
@@ -45,7 +46,10 @@ const SignIn = () => {
       await sendSignInLinkToEmail(auth, email, actionCodeSettings);
       window.localStorage.setItem("emailForSignIn", email);
     } catch (error) {
-      console.error("Error sending sign-in link:", error);
+      setError("root", {
+        type: "server",
+        message: (error as Error).message,
+      });
     }
   };
 
@@ -61,6 +65,7 @@ const SignIn = () => {
           })}
         />
         {errors.email && <p>{errorMessages.email[errors.email?.type]}</p>}
+        {errors.root?.type == "server" && <p>{errors.root.message}</p>}
         <button type="submit">Sign in</button>
       </form>
     </div>
