@@ -9,7 +9,7 @@ import {
 } from "react-hook-form";
 import { db } from "../../firebase";
 import { useRouter } from "next/navigation";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import useUserState from "@/hooks/useUserState";
 
 type Inputs = {
