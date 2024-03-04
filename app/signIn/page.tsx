@@ -8,10 +8,11 @@ import {
   useForm,
 } from "react-hook-form";
 import { auth } from "../../firebase";
-import { sendSignInLinkToEmail } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 type Inputs = {
   email: string;
+  password: string;
 };
 
 type ErrorOptionTypes = LiteralUnion<keyof RegisterOptions, string>;
@@ -27,6 +28,9 @@ const errorMessages: ErrorMessages = {
     required: "Email is required",
     pattern: "Email must end in @wmsu.edu.ph",
   },
+  password: {
+    required: "Password is required",
+  },
 };
 
 const SignIn = () => {
@@ -37,14 +41,9 @@ const SignIn = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = async ({ email }) => {
-    const actionCodeSettings = {
-      url: `http://localhost:3000/authRedirect`,
-      handleCodeInApp: true,
-    };
+  const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
     try {
-      await sendSignInLinkToEmail(auth, email, actionCodeSettings);
-      window.localStorage.setItem("emailForSignIn", email);
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       setError("root", {
         type: "server",
@@ -65,6 +64,17 @@ const SignIn = () => {
           })}
         />
         {errors.email && <p>{errorMessages.email[errors.email?.type]}</p>}
+
+        <input
+          type="password"
+          placeholder="Password"
+          {...register("password", { required: true })}
+        />
+
+        {errors.password && (
+          <p>{errorMessages.password[errors.password?.type]}</p>
+        )}
+
         {errors.root?.type == "server" && <p>{errors.root.message}</p>}
         <button type="submit">Sign in</button>
       </form>
