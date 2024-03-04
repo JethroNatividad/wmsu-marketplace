@@ -1,8 +1,9 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
-import error from "next/error";
 
 export type UserData = {
   completeSignUp: boolean;
@@ -18,7 +19,7 @@ export type UserData = {
 const useUserState = () => {
   const [user, loadingUser, errorUser] = useAuthState(auth);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const [errorUserData, setErrorUserData] = useState<Error | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
 
   useEffect(() => {
@@ -46,7 +47,8 @@ const useUserState = () => {
           }
         } catch (error) {
           console.error("Error fetching user data:", error);
-          setError(error as Error);
+          setErrorUserData(error as Error);
+          setLoading(false);
         }
       }
     };
@@ -56,7 +58,7 @@ const useUserState = () => {
     }
   }, [user]);
 
-  return { user, userData, loading, error };
+  return { user, userData, loading, errorUser, errorUserData };
 };
 
 export default useUserState;
