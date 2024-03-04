@@ -1,16 +1,16 @@
 "use client";
 // pages/SignIn.tsx
-import React, { useEffect } from "react";
+import React from "react";
 import {
   LiteralUnion,
   RegisterOptions,
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { auth, db } from "../../firebase";
+import { db } from "../../firebase";
 import { useRouter } from "next/navigation";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { doc } from "firebase/firestore";
+import useUserState from "@/hooks/useUserState";
 
 type Inputs = {
   firstName: string;
@@ -43,40 +43,24 @@ const errorMessages: ErrorMessages = {
 };
 
 const CompleteSignUp = () => {
-  const [user, loadingUser, errorUser] = useAuthState(auth);
+  const { user, userData, loading, error } = useUserState();
+  const router = useRouter();
 
-  if (loadingUser) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (errorUser) {
-    return <div>Error: {errorUser?.message}</div>;
+  if (error) {
+    return <div>Error: {error?.message}</div>;
   }
 
   if (!user) {
     return <div>Error: User not found</div>;
   }
 
-  useEffect(() => {
-    const handleCompleteUser = async () => {
-      // Check if the user's email is verified
-      if (user.emailVerified) {
-        // Check if user has completed sign up, (added name, etc.)
-        // Redirect to /
-        const userRef = doc(db, "users", user.uid);
-        const userData = await getDoc(userRef);
-        if (userData.exists() && userData.data()?.completeSignUp) {
-          return router.push("/");
-        }
-      }
-    };
-
-    if (!loadingUser && !errorUser && user) {
-      handleCompleteUser();
-    }
-  }, [user, loadingUser, errorUser]);
-
-  const router = useRouter();
+  if (userData && userData.completeSignUp) {
+    return router.push("/");
+  }
 
   const {
     register,
@@ -87,7 +71,7 @@ const CompleteSignUp = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async ({}) => {
     try {
-      const userRef = doc(db, "users", user.uid);
+      // Add user data to firestore
     } catch (error) {
       setError("root", {
         type: "server",
