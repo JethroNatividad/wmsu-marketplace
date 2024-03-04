@@ -25,7 +25,7 @@ type ErrorMessages = {
 const errorMessages: ErrorMessages = {
   email: {
     required: "Email is required",
-    pattern: "Email must be @wmsu.edu.ph",
+    pattern: "Email must end in @wmsu.edu.ph",
   },
 };
 
