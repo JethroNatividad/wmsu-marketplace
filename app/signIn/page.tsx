@@ -8,7 +8,7 @@ import {
   useForm,
 } from "react-hook-form";
 import { auth } from "../../firebase";
-import { AuthError, sendSignInLinkToEmail } from "firebase/auth";
+import { sendSignInLinkToEmail } from "firebase/auth";
 
 type Inputs = {
   email: string;
