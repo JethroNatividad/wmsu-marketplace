@@ -1,3 +1,4 @@
+"use client";
 // pages/SignIn.tsx
 import React from "react";
 import {
