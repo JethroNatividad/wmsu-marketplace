@@ -47,7 +47,7 @@ const SignIn = () => {
   const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
-      //   Check if email verified
+      // Check if email verified
       if (!user.emailVerified) {
         return router.push("/verifyEmail");
       }
