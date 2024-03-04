@@ -37,12 +37,8 @@ const VerifyEmail = () => {
     return <div>Loading...</div>;
   }
 
-  if (errorUser) {
-    return <div>Error: {errorUser?.message}</div>;
-  }
-
   if (!user) {
-    return <div>Error: User not found</div>;
+    return router.push("/signIn");
   }
 
   return (
