@@ -9,7 +9,7 @@ import {
 } from "react-hook-form";
 import { db } from "../../firebase";
 import { useRouter } from "next/navigation";
-import { doc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 import useUserState from "@/hooks/useUserState";
 
 type Inputs = {
@@ -43,15 +43,22 @@ const errorMessages: ErrorMessages = {
 };
 
 const CompleteSignUp = () => {
-  const { user, userData, loading, error } = useUserState();
+  const { user, userData, loading, errorUserData } = useUserState();
   const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<Inputs>();
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>Error: {error?.message}</div>;
+  if (errorUserData) {
+    return <div>Error: {errorUserData?.message}</div>;
   }
 
   if (!user) {
@@ -62,16 +69,17 @@ const CompleteSignUp = () => {
     return router.push("/");
   }
 
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm<Inputs>();
-
-  const onSubmit: SubmitHandler<Inputs> = async ({}) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      // Add user data to firestore
+      // Reference the user document in Firestore
+      const userRef = doc(db, "users", user.uid);
+
+      await setDoc(userRef, {
+        ...data,
+        completeSignUp: true,
+      });
+      // Redirect to home page after successful sign-up
+      router.push("/");
     } catch (error) {
       setError("root", {
         type: "server",
@@ -108,6 +116,16 @@ const CompleteSignUp = () => {
 
         {errors.lastName && (
           <p>{errorMessages.lastName[errors.lastName?.type]}</p>
+        )}
+
+        <input
+          type="department"
+          placeholder="department"
+          {...register("department", { required: true })}
+        />
+
+        {errors.department && (
+          <p>{errorMessages.department[errors.department?.type]}</p>
         )}
 
         {errors.root?.type == "server" && <p>{errors.root.message}</p>}
