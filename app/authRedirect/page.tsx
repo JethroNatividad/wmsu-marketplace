@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { auth, db } from "../../firebase";
 import { signInWithEmailLink } from "firebase/auth";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 const AuthRedirect = () => {
   const router = useRouter();
