@@ -37,7 +37,7 @@ const SignIn = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async ({ email }) => {
     const actionCodeSettings = {
-      url: "http://localhost:3000/authRedirect",
+      url: `${window.location.origin}/authRedirect`,
       handleCodeInApp: true,
     };
     try {
@@ -53,7 +53,7 @@ const SignIn = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
           type="email"
-          placeholder="Enter university email"
+          placeholder="eh123456789@wmsu.edu.ph"
           {...register("email", {
             required: true,
             pattern: /^[a-zA-Z0-9._%+-]+@wmsu\.edu\.ph$/,
