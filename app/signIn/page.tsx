@@ -46,20 +46,8 @@ const SignIn = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
     try {
-      const { user } = await signInWithEmailAndPassword(auth, email, password);
-      // Check if email verified
-      if (!user.emailVerified) {
-        return router.push("/verifyEmail");
-      }
-
-      // Check if user has completed sign up, (added name, etc.)
-      const userRef = doc(db, "users", user.uid);
-      const userData = await getDoc(userRef);
-      if (!userData.exists || !userData.data()?.completeSignUp) {
-        return router.push("/completeSignUp");
-      } else {
-        return router.push("/");
-      }
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push("/");
     } catch (error) {
       setError("root", {
         type: "server",
