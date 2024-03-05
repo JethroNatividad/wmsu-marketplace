@@ -1,15 +1,18 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { sendEmailVerification } from "firebase/auth";
 import { auth } from "@/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import authHeroImage from "@/assets/images/auth-hero.png";
 import Image from "next/image";
+import { set } from "firebase/database";
 
 const VerifyEmail = () => {
   const [user, loading, error] = useAuthState(auth);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -25,9 +28,12 @@ const VerifyEmail = () => {
     }
   }, [user, loading, error]);
 
-  const handleSendEmailVerification = () => {
+  const handleSendEmailVerification = async () => {
     if (user) {
-      sendEmailVerification(user);
+      setSending(true);
+      await sendEmailVerification(user);
+      setSending(false);
+      setSent(true);
     }
   };
 
@@ -47,10 +53,33 @@ const VerifyEmail = () => {
             Account Created Successfully. Please verify your email to continue.
           </p>
           <button
-            className="btn btn-primary"
+            className="btn btn-primary w-full"
+            disabled={sending}
             onClick={handleSendEmailVerification}
           >
-            Send Verification Email
+            {sending
+              ? "Sending"
+              : sent
+              ? "Resend Verification Email"
+              : "Send Verification Email"}
+
+            {sending && <span className="loading loading-spinner"></span>}
+            {!sending && sent && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m4.5 12.75 6 6 9-13.5"
+                />
+              </svg>
+            )}
           </button>
         </div>
       </div>
