@@ -33,7 +33,12 @@ const Home = () => {
 
   return (
     <main>
-      <h1>Hello, {userData?.firstName}</h1>
+      <h1>
+        Hello, {userData?.firstName} {userData?.middleName} {userData?.lastName}
+      </h1>
+      <p>Email: {userData?.email}</p>
+      <p>Course: {userData?.course}</p>
+      <p>Preferred Campus: {userData?.preferredCampus}</p>
     </main>
   );
 };

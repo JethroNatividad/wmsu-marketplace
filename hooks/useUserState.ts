@@ -23,11 +23,9 @@ const useUserState = () => {
               firstName: data.firstName,
               middleName: data.middleName,
               lastName: data.lastName,
-              department: data.department,
+              course: data.course,
               preferredCampus: data.preferredCampus,
-              profilePicture: data.profilePicture,
-              bio: data.bio,
-              email: data.email,
+              email: data.email || user.email || "",
             });
             setLoading(false);
           } else {

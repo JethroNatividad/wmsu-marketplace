@@ -4,8 +4,6 @@ export interface UserData {
   firstName: string;
   middleName?: string;
   lastName: string;
-  department: string;
-  preferredCampus?: string;
-  profilePicture?: string;
-  bio?: string;
+  course: string;
+  preferredCampus: string;
 }
