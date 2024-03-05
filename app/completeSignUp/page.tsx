@@ -7,12 +7,12 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { db } from "@/firebase";
 import { useRouter } from "next/navigation";
-import { doc, setDoc } from "firebase/firestore";
+import { updateDoc } from "firebase/firestore";
 import useUserState from "@/hooks/useUserState";
 import Image from "next/image";
 import authHeroImage from "@/assets/images/auth-hero.png";
+import { userRef } from "@/models/UserData";
 
 type Inputs = {
   firstName: string;
@@ -89,9 +89,8 @@ const CompleteSignUp = () => {
     if (user) {
       try {
         // Reference the user document in Firestore
-        const userRef = doc(db, "users", user.uid);
 
-        await setDoc(userRef, {
+        await updateDoc(userRef(user.uid), {
           firstName,
           middleName: middleName || "",
           lastName,
