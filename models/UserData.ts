@@ -1,3 +1,5 @@
+import { createCollection } from "@/firebase";
+
 export interface UserData {
   completeSignUp: boolean;
   email: string;
@@ -7,3 +9,5 @@ export interface UserData {
   course: string;
   preferredCampus: string;
 }
+
+export const userRef = createCollection<UserData>("users");
