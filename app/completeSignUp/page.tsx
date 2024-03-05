@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   LiteralUnion,
   RegisterOptions,
@@ -47,6 +47,8 @@ const errorMessages: ErrorMessages = {
 };
 
 const CompleteSignUp = () => {
+  const [sending, setSending] = useState(false);
+
   const { user, userData, loading, error } = useUserState();
   const router = useRouter();
 
@@ -88,6 +90,7 @@ const CompleteSignUp = () => {
     preferredCampus,
   }) => {
     if (user) {
+      setSending(true);
       try {
         // Reference the user document in Firestore
 
@@ -99,6 +102,7 @@ const CompleteSignUp = () => {
           preferredCampus: preferredCampus || "",
           completeSignUp: true,
         });
+        setSending(false);
         // Redirect to home page after successful sign-up
         router.push("/");
       } catch (error) {
@@ -106,6 +110,8 @@ const CompleteSignUp = () => {
           type: "server",
           message: (error as Error).message,
         });
+
+        setSending(false);
       }
     }
   };
@@ -259,8 +265,13 @@ const CompleteSignUp = () => {
             </span>
           )}
 
-          <button className="btn btn-primary w-full" type="submit">
+          <button
+            disabled={sending}
+            className="btn btn-primary w-full"
+            type="submit"
+          >
             Continue
+            {sending && <span className="loading loading-spinner"></span>}
           </button>
         </form>
       </div>
