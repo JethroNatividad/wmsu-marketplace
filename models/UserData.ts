@@ -1,4 +1,5 @@
 import { createCollection } from "@/firebase";
+import { doc } from "firebase/firestore";
 
 export interface UserData {
   completeSignUp: boolean;
@@ -10,4 +11,6 @@ export interface UserData {
   preferredCampus: string;
 }
 
-export const userRef = createCollection<UserData>("users");
+export const usersRef = createCollection<UserData>("users");
+
+export const userRef = (uid: string) => doc(usersRef, uid);

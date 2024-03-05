@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "@/firebase";
-import { UserData } from "@/models/UserData";
+import { getDoc } from "firebase/firestore";
+import { auth } from "@/firebase";
+import { UserData, userRef } from "@/models/UserData";
 
 const useUserState = () => {
   const [user, loadingUser, errorUser] = useAuthState(auth);
@@ -14,8 +14,7 @@ const useUserState = () => {
     const fetchUserData = async () => {
       if (user) {
         try {
-          const userRef = doc(db, "users", user.uid);
-          const userDataSnapshot = await getDoc(userRef);
+          const userDataSnapshot = await getDoc(userRef(user.uid));
           if (userDataSnapshot.exists()) {
             const data = userDataSnapshot.data() as UserData;
             setUserData({
