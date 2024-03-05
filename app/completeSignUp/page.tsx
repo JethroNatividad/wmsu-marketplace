@@ -19,10 +19,8 @@ type Inputs = {
   firstName: string;
   middleName?: string;
   lastName: string;
-  department: string;
+  course: string;
   preferredCampus?: string;
-  profilePicture?: string;
-  bio?: string;
 };
 
 type ErrorOptionTypes = LiteralUnion<keyof RegisterOptions, string>;
@@ -40,14 +38,19 @@ const errorMessages: ErrorMessages = {
   lastName: {
     required: "Last Name is required",
   },
-  department: {
-    required: "Department is required",
+  course: {
+    required: "Course is required",
   },
 };
 
 const CompleteSignUp = () => {
   const { user, userData, loading, error } = useUserState();
   const router = useRouter();
+  const courses = [
+    "BS in Computer Science",
+    "BS in Information Technology",
+    "BS in Computer Engineering",
+  ];
 
   useEffect(() => {
     // - Not logged in ? redirect to /signIn : continue
@@ -164,7 +167,7 @@ const CompleteSignUp = () => {
 
           <label className="form-control w-full">
             <div className="label">
-              <span className="label-text">Middle Name</span>
+              <span className="label-text">Middle Name (Optional)</span>
             </div>
             <input
               className={`input input-bordered w-full`}
@@ -174,6 +177,35 @@ const CompleteSignUp = () => {
             />
 
             <div className="label"></div>
+          </label>
+
+          <label className="form-control w-full">
+            <div className="label">
+              <span className="label-text">Course</span>
+            </div>
+            <select
+              {...(register("course"),
+              {
+                required: true,
+              })}
+              className="select select-bordered"
+            >
+              <option value="" disabled selected>
+                Select a Course
+              </option>
+              {courses.map((course) => (
+                <option key={course} value={course}>
+                  {course}
+                </option>
+              ))}
+            </select>
+            <div className="label">
+              {errors.course && (
+                <span className="label-text-alt text-error">
+                  {errorMessages.course[errors.course?.type]}
+                </span>
+              )}
+            </div>
           </label>
 
           <button className="btn btn-primary w-full" type="submit">
