@@ -2,7 +2,7 @@
 // pages/verify.tsx
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { onAuthStateChanged, sendEmailVerification } from "firebase/auth";
+import { sendEmailVerification } from "firebase/auth";
 import { auth } from "@/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -20,7 +20,6 @@ const VerifyEmail = () => {
       if (user.emailVerified) {
         return router.push("/completeSignUp");
       }
-      sendEmailVerification(user);
     }
   }, [user, loading, error]);
 
@@ -33,12 +32,9 @@ const VerifyEmail = () => {
   return (
     <div>
       <div>
-        <p>
-          Please verify your email. A verification email has been sent to your
-          email address. Reload this page after verifying your email.
-        </p>
+        <p>Verify Email</p>
         <button onClick={handleSendEmailVerification}>
-          Resend Verification Email
+          Send Verification Email
         </button>
       </div>
     </div>
