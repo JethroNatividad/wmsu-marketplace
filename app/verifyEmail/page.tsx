@@ -1,5 +1,5 @@
 "use client";
-// pages/verify.tsx
+
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { sendEmailVerification } from "firebase/auth";

@@ -1,5 +1,5 @@
 "use client";
-// pages/SignIn.tsx
+
 import React, { useEffect } from "react";
 import {
   LiteralUnion,
@@ -7,12 +7,10 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { auth, db } from "@/firebase";
+import { db } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { doc, setDoc } from "firebase/firestore";
 import useUserState from "@/hooks/useUserState";
-import { useAuthState } from "react-firebase-hooks/auth";
-import error from "next/error";
 
 type Inputs = {
   firstName: string;

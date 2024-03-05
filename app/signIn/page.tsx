@@ -1,5 +1,5 @@
 "use client";
-// pages/SignIn.tsx
+
 import React from "react";
 import {
   LiteralUnion,
@@ -7,10 +7,9 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { auth, db } from "../../firebase";
+import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { doc, getDoc } from "firebase/firestore";
 
 type Inputs = {
   email: string;
