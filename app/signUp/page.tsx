@@ -10,7 +10,7 @@ import {
 import { auth, db } from "@/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { UserData } from "@/models/UserData";
+import { UserData, userRef } from "@/models/UserData";
 import { doc, setDoc } from "firebase/firestore";
 import Image from "next/image";
 import authHeroImage from "@/assets/images/auth-hero.png";
@@ -71,11 +71,15 @@ const SignUp = () => {
         password
       );
       // Store initial user data in Firestore
-      const userRef = doc(db, "users", user.uid);
-      await setDoc(userRef, {
-        email: user.email,
+      await setDoc(userRef(user.uid), {
+        email: user.email || "",
         completeSignUp: false,
-      } as UserData);
+        course: "",
+        firstName: "",
+        lastName: "",
+        middleName: "",
+        preferredCampus: "",
+      });
       // Redirect to verify email
       return router.push("/verifyEmail");
     } catch (error) {
