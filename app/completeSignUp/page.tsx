@@ -11,10 +11,13 @@ import { db } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { doc, setDoc } from "firebase/firestore";
 import useUserState from "@/hooks/useUserState";
+import Image from "next/image";
+import authHeroImage from "@/assets/images/auth-hero.png";
+import Link from "next/link";
 
 type Inputs = {
   firstName: string;
-  MiddleName?: string;
+  middleName?: string;
   lastName: string;
   department: string;
   preferredCampus?: string;
@@ -98,48 +101,86 @@ const CompleteSignUp = () => {
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          type="text"
-          placeholder="First Name"
-          {...register("firstName", {
-            required: true,
-          })}
-        />
-        {errors.firstName && (
-          <p>{errorMessages.firstName[errors.firstName?.type]}</p>
-        )}
+    <div className="flex h-screen">
+      <div className="hidden lg:block w-1/2 h-full relative overflow-hidden">
+        <Image className="object-cover" fill src={authHeroImage} alt="hero" />
+      </div>
+      <div className="w-full lg:w-1/2 h-full flex lg:items-center justify-center">
+        <form
+          className="w-full max-w-lg px-5 py-10 lg:py-0"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <h1 className="text-4xl font-bold mb-5">Finish Creating Account</h1>
 
-        <input
-          type="text"
-          placeholder="Middle Name"
-          {...register("MiddleName")}
-        />
+          <div className="sm:flex sm:space-x-5">
+            <label className="form-control w-full">
+              <div className="label">
+                <span className="label-text">First Name</span>
+              </div>
+              <input
+                className={`input input-bordered w-full ${
+                  errors.firstName && "input-error text-error"
+                }`}
+                type="text"
+                placeholder="Juan"
+                {...register("firstName", {
+                  required: true,
+                })}
+              />
 
-        <input
-          type="text"
-          placeholder="Last Name"
-          {...register("lastName", { required: true })}
-        />
+              <div className="label">
+                {errors.firstName && (
+                  <span className="label-text-alt text-error">
+                    {errorMessages.firstName[errors.firstName?.type]}
+                  </span>
+                )}
+              </div>
+            </label>
 
-        {errors.lastName && (
-          <p>{errorMessages.lastName[errors.lastName?.type]}</p>
-        )}
+            <label className="form-control w-full">
+              <div className="label">
+                <span className="label-text">Last Name</span>
+              </div>
+              <input
+                className={`input input-bordered w-full ${
+                  errors.lastName && "input-error text-error"
+                }`}
+                type="text"
+                placeholder="Cruz"
+                {...register("lastName", {
+                  required: true,
+                })}
+              />
 
-        <input
-          type="department"
-          placeholder="department"
-          {...register("department", { required: true })}
-        />
+              <div className="label">
+                {errors.lastName && (
+                  <span className="label-text-alt text-error">
+                    {errorMessages.lastName[errors.lastName?.type]}
+                  </span>
+                )}
+              </div>
+            </label>
+          </div>
 
-        {errors.department && (
-          <p>{errorMessages.department[errors.department?.type]}</p>
-        )}
+          <label className="form-control w-full">
+            <div className="label">
+              <span className="label-text">Middle Name</span>
+            </div>
+            <input
+              className={`input input-bordered w-full`}
+              type="text"
+              placeholder="Santos"
+              {...register("middleName")}
+            />
 
-        {errors.root?.type == "server" && <p>{errors.root.message}</p>}
-        <button type="submit">Sign in</button>
-      </form>
+            <div className="label"></div>
+          </label>
+
+          <button className="btn btn-primary w-full" type="submit">
+            Continue
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
