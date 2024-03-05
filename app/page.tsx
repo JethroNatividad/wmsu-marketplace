@@ -1,6 +1,7 @@
 "use client";
 
 import Layout from "@/components/Layout";
+import PageLoading from "@/components/PageLoading";
 import useUserState from "@/hooks/useUserState";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -29,7 +30,7 @@ const Home = () => {
   }, [user, loading, error, userData]);
 
   if (loading || !userData?.completeSignUp || !user?.emailVerified) {
-    return <div>Loading...</div>;
+    return <PageLoading />;
   }
 
   return (

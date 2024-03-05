@@ -1,6 +1,7 @@
 "use client";
 
 import Layout from "@/components/Layout";
+import PageLoading from "@/components/PageLoading";
 import useUserState from "@/hooks/useUserState";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -30,7 +31,7 @@ const ManageListing = () => {
   }, [user, loading, error, userData]);
 
   if (loading || !userData?.completeSignUp || !user?.emailVerified) {
-    return <div>Loading...</div>;
+    return <PageLoading />;
   }
 
   return (

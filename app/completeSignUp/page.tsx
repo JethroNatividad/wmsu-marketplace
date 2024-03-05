@@ -13,6 +13,7 @@ import useUserState from "@/hooks/useUserState";
 import Image from "next/image";
 import authHeroImage from "@/assets/images/auth-hero.png";
 import { userRef } from "@/models/User";
+import PageLoading from "@/components/PageLoading";
 
 type Inputs = {
   firstName: string;
@@ -110,7 +111,7 @@ const CompleteSignUp = () => {
   };
 
   if (loading || !user?.emailVerified || userData?.completeSignUp) {
-    return <div>Loading...</div>;
+    return <PageLoading />;
   }
 
   return (

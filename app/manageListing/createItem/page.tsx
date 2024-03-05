@@ -1,6 +1,7 @@
 "use client";
 
 import Layout from "@/components/Layout";
+import PageLoading from "@/components/PageLoading";
 import { auth } from "@/firebase";
 import useUserState from "@/hooks/useUserState";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -99,7 +100,7 @@ const ManageListing = () => {
   }, [user, loading, error, userData]);
 
   if (loading || !userData?.completeSignUp || !user?.emailVerified) {
-    return <div>Loading...</div>;
+    return <PageLoading />;
   }
 
   return (
