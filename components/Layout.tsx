@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "./Navbar";
+import Link from "next/link";
 
 const Layout = ({
   children,
@@ -92,7 +93,7 @@ const Layout = ({
               </a>
             </li>
             <li>
-              <a>
+              <Link href="/manageListing">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -108,7 +109,7 @@ const Layout = ({
                   />
                 </svg>
                 Your Listings
-              </a>
+              </Link>{" "}
             </li>
           </ul>
         </div>
