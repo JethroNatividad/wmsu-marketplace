@@ -2,46 +2,33 @@
 // pages/verify.tsx
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { sendEmailVerification } from "firebase/auth";
-import useUserState from "@/hooks/useUserState";
+import { onAuthStateChanged, sendEmailVerification } from "firebase/auth";
+import { auth } from "@/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const VerifyEmail = () => {
-  const { user, loading, errorUser, userData } = useUserState();
+  const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
 
   useEffect(() => {
-    const checkEmailVerification = async () => {
+    // - Not logged in ? redirect to /signIn : continue
+    // - user already verified ? redirect to /completeSignUp : continue
+    if (!loading && !error) {
       if (!user) {
         return router.push("/signIn");
       }
-
-      // Check if the user's email is verified
       if (user.emailVerified) {
-        // Check if user has completed sign up, (added name, etc.)
-        // Redirect to completeSignUp if not
-        if (!userData?.completeSignUp) {
-          return router.push("/completeSignUp");
-        }
-        return router.push("/");
+        return router.push("/completeSignUp");
       }
-      // Send a verification email
       sendEmailVerification(user);
-    };
-
-    if (!loading && !errorUser) {
-      checkEmailVerification();
     }
-  }, [user, loading, errorUser, userData]);
+  }, [user, loading, error]);
 
-  const handleSendEmailVerification = async () => {
+  const handleSendEmailVerification = () => {
     if (user) {
       sendEmailVerification(user);
     }
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div>
