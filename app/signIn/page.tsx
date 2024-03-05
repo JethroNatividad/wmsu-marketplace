@@ -56,31 +56,63 @@ const SignIn = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          type="email"
-          placeholder="eh123456789@wmsu.edu.ph"
-          {...register("email", {
-            required: true,
-            pattern: /^[a-zA-Z0-9._%+-]+@wmsu\.edu\.ph$/,
-          })}
-        />
-        {errors.email && <p>{errorMessages.email[errors.email?.type]}</p>}
+    <div className="flex h-screen">
+      <div className="hidden md:block w-1/2 h-full">Left</div>
+      <div className="w-full md:w-1/2 h-full">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label className="form-control w-full">
+            <div className="label">
+              <span className="label-text">Email</span>
+            </div>
+            <input
+              className={`input input-bordered w-full max-w-md ${
+                errors.email && "input-error text-error"
+              }`}
+              type="text"
+              placeholder="eh123456789@wmsu.edu.ph"
+              {...register("email", {
+                required: true,
+                pattern: /^[a-zA-Z0-9._%+-]+@wmsu\.edu\.ph$/,
+              })}
+            />
 
-        <input
-          type="password"
-          placeholder="Password"
-          {...register("password", { required: true })}
-        />
+            <div className="label">
+              {errors.email && (
+                <span className="label-text-alt text-error">
+                  {errorMessages.email[errors.email?.type]}
+                </span>
+              )}
+            </div>
+          </label>
 
-        {errors.password && (
-          <p>{errorMessages.password[errors.password?.type]}</p>
-        )}
+          <label className="form-control w-full">
+            <div className="label">
+              <span className="label-text">Password</span>
+            </div>
+            <input
+              className={`input input-bordered w-full max-w-md ${
+                errors.password && "input-error text-error"
+              }`}
+              type="password"
+              placeholder="Password"
+              {...register("password", { required: true })}
+            />
 
-        {errors.root?.type == "server" && <p>{errors.root.message}</p>}
-        <button type="submit">Sign in</button>
-      </form>
+            <div className="label">
+              {errors.password && (
+                <span className="label-text-alt text-error">
+                  {errorMessages.password[errors.password?.type]}
+                </span>
+              )}
+            </div>
+          </label>
+
+          {errors.root?.type == "server" && <p>{errors.root.message}</p>}
+          <button className="btn btn-primary" type="submit">
+            Sign in
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
