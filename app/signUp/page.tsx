@@ -7,9 +7,11 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import { UserData } from "@/models/UserData";
+import { doc, setDoc } from "firebase/firestore";
 
 type Inputs = {
   email: string;
@@ -46,7 +48,17 @@ const SignUp = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      // Store initial user data in Firestore
+      const userRef = doc(db, "users", user.uid);
+      await setDoc(userRef, {
+        email: user.email,
+        completeSignUp: true,
+      } as UserData);
       // Redirect to verify email
       return router.push("/verifyEmail");
     } catch (error) {
