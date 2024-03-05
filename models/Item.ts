@@ -12,13 +12,14 @@ import { UserInfo } from "firebase/auth";
 // tags: [string]
 
 export interface Item {
-  seller: UserInfo["uid"];
+  seller: string;
   itemName: string;
   price: number;
-  discount: number;
+  discount?: number;
   category: string;
   condition: string;
   description: string;
   campus: string;
   tags: string[];
+  images: string[];
 }
