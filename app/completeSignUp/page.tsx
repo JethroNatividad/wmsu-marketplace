@@ -19,7 +19,7 @@ type Inputs = {
   middleName?: string;
   lastName: string;
   course: string;
-  preferredCampus?: string;
+  preferredCampus: string;
 };
 
 type ErrorOptionTypes = LiteralUnion<keyof RegisterOptions, string>;
@@ -40,19 +40,18 @@ const errorMessages: ErrorMessages = {
   course: {
     required: "Course is required",
   },
+  preferredCampus: {
+    required: "Preferred Campus is required",
+  },
 };
 
 const CompleteSignUp = () => {
   const { user, userData, loading, error } = useUserState();
   const router = useRouter();
 
-  const courses = [
-    "BS in Computer Science",
-    "BS in Information Technology",
-    "BS in Computer Engineering",
-  ];
+  const courses = ["BSCS", "BSIT", "BSCpE"];
 
-  const preferredCampus = ["Main campus A", "Main campus B"];
+  const preferredCampus = ["Main Campus A", "Main Campus B"];
 
   useEffect(() => {
     // - Not logged in ? redirect to /signIn : continue
@@ -206,7 +205,7 @@ const CompleteSignUp = () => {
               }`}
             >
               <option value="" disabled>
-                Select a Course
+                Select Course
               </option>
               {courses.map((course) => (
                 <option key={course} value={course}>
@@ -228,19 +227,30 @@ const CompleteSignUp = () => {
               <span className="label-text">Preferred Campus</span>
             </div>
             <select
-              {...(register("preferredCampus"),
-              {
+              {...register("preferredCampus", {
                 required: true,
               })}
-              className="select select-bordered"
+              className={`select select-bordered w-full ${
+                errors.preferredCampus && "select-error text-error"
+              }`}
+              defaultValue=""
             >
+              <option value="" disabled>
+                Select Preferred Campus
+              </option>
               {preferredCampus.map((campus) => (
                 <option key={campus} value={campus}>
                   {campus}
                 </option>
               ))}
             </select>
-            <div className="label"></div>
+            <div className="label">
+              {errors.preferredCampus && (
+                <span className="label-text-alt text-error">
+                  {errorMessages.preferredCampus[errors.preferredCampus?.type]}
+                </span>
+              )}
+            </div>
           </label>
 
           {errors.root?.type == "server" && (
