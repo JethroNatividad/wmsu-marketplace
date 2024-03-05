@@ -4,17 +4,7 @@ import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
-
-export type UserData = {
-  completeSignUp: boolean;
-  firstName: string;
-  middleName?: string;
-  lastName: string;
-  department: string;
-  preferredCampus?: string;
-  profilePicture?: string;
-  bio?: string;
-};
+import { UserData } from "@/models/UserData";
 
 const useUserState = () => {
   const [user, loadingUser, errorUser] = useAuthState(auth);
@@ -31,14 +21,15 @@ const useUserState = () => {
           if (userDataSnapshot.exists()) {
             const data = userDataSnapshot.data() as UserData;
             setUserData({
-              completeSignUp: data.completeSignUp || false,
-              firstName: data.firstName || "",
-              middleName: data.middleName || "",
-              lastName: data.lastName || "",
-              department: data.department || "",
-              preferredCampus: data.preferredCampus || "",
-              profilePicture: data.profilePicture || "",
-              bio: data.bio || "",
+              completeSignUp: data.completeSignUp,
+              firstName: data.firstName,
+              middleName: data.middleName,
+              lastName: data.lastName,
+              department: data.department,
+              preferredCampus: data.preferredCampus,
+              profilePicture: data.profilePicture,
+              bio: data.bio,
+              email: data.email,
             });
             setLoading(false);
           } else {
@@ -56,9 +47,14 @@ const useUserState = () => {
     if (!loadingUser && !errorUser) {
       fetchUserData();
     }
-  }, [user]);
+  }, [user, loadingUser, errorUser]);
 
-  return { user, userData, loading, errorUser, errorUserData };
+  return {
+    user,
+    userData,
+    loading: loadingUser && loading,
+    error: errorUserData || errorUser,
+  };
 };
 
 export default useUserState;
