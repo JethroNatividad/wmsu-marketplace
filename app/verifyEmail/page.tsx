@@ -29,6 +29,10 @@ const VerifyEmail = () => {
     }
   };
 
+  if (loading || !user || user.emailVerified) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div>
       <div>
