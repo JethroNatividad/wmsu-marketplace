@@ -51,7 +51,7 @@ const CompleteSignUp = () => {
     // - user not yet verified ? redirect to /verifyEmail: continue
     // - user already completeSignUp ? redirect to / : continue
     if (!loading && !error) {
-      if (!user) {
+      if (!user || !userData) {
         return router.push("/signIn");
       }
 
@@ -59,11 +59,11 @@ const CompleteSignUp = () => {
         return router.push("/verifyEmail");
       }
 
-      if (userData?.completeSignUp) {
+      if (userData.completeSignUp) {
         return router.push("/");
       }
     }
-  }, [user, loading, error]);
+  }, [user, loading, error, userData]);
 
   const {
     register,
