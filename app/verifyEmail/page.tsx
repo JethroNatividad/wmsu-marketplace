@@ -12,7 +12,7 @@ import { set } from "firebase/database";
 const VerifyEmail = () => {
   const [user, loading, error] = useAuthState(auth);
   const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState(true);
+  const [sent, setSent] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
