@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -38,6 +38,7 @@ const errorMessages: ErrorMessages = {
 };
 
 const SignIn = () => {
+  const [sending, setSending] = useState(false);
   const router = useRouter();
   const {
     register,
@@ -48,13 +49,16 @@ const SignIn = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
     try {
+      setSending(true);
       await signInWithEmailAndPassword(auth, email, password);
+      setSending(false);
       router.push("/");
     } catch (error) {
       setError("root", {
         type: "server",
         message: (error as Error).message,
       });
+      setSending(false);
     }
   };
 
@@ -122,8 +126,13 @@ const SignIn = () => {
             </div>
           </label>
 
-          <button className="btn btn-primary w-full" type="submit">
-            Sign in
+          <button
+            className="btn btn-primary w-full"
+            disabled={sending}
+            type="submit"
+          >
+            Sign In
+            {sending && <span className="loading loading-spinner"></span>}
           </button>
 
           <p className="text-sm mt-2">
