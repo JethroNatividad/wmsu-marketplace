@@ -1,6 +1,6 @@
 "use client";
 // pages/SignIn.tsx
-import React from "react";
+import React, { useEffect } from "react";
 import {
   LiteralUnion,
   RegisterOptions,
@@ -43,8 +43,18 @@ const errorMessages: ErrorMessages = {
 };
 
 const CompleteSignUp = () => {
-  const { user, userData, loading, errorUserData } = useUserState();
+  const { user, userData, loading, errorUser } = useUserState();
   const router = useRouter();
+
+  useEffect(() => {
+    if (errorUser || !user) {
+      return router.push("/signIn");
+    }
+
+    if (userData && userData.completeSignUp) {
+      return router.push("/");
+    }
+  }, [loading, errorUser, userData]);
 
   const {
     register,
@@ -53,40 +63,30 @@ const CompleteSignUp = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    if (user) {
+      try {
+        // Reference the user document in Firestore
+        const userRef = doc(db, "users", user.uid);
+
+        await setDoc(userRef, {
+          ...data,
+          completeSignUp: true,
+        });
+        // Redirect to home page after successful sign-up
+        router.push("/");
+      } catch (error) {
+        setError("root", {
+          type: "server",
+          message: (error as Error).message,
+        });
+      }
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
-
-  if (errorUserData) {
-    return <div>Error: {errorUserData?.message}</div>;
-  }
-
-  if (!user) {
-    return <div>Error: User not found</div>;
-  }
-
-  if (userData && userData.completeSignUp) {
-    return router.push("/");
-  }
-
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    try {
-      // Reference the user document in Firestore
-      const userRef = doc(db, "users", user.uid);
-
-      await setDoc(userRef, {
-        ...data,
-        completeSignUp: true,
-      });
-      // Redirect to home page after successful sign-up
-      router.push("/");
-    } catch (error) {
-      setError("root", {
-        type: "server",
-        message: (error as Error).message,
-      });
-    }
-  };
 
   return (
     <div>
