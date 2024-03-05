@@ -1,6 +1,6 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
+import Layout from "@/components/Layout";
 import useUserState from "@/hooks/useUserState";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -33,8 +33,7 @@ const Home = () => {
   }
 
   return (
-    <>
-      <Navbar />
+    <Layout>
       <main>
         <h1>
           Hello, {userData?.firstName} {userData?.middleName}{" "}
@@ -44,7 +43,7 @@ const Home = () => {
         <p>Course: {userData?.course}</p>
         <p>Preferred Campus: {userData?.preferredCampus}</p>
       </main>
-    </>
+    </Layout>
   );
 };
 
