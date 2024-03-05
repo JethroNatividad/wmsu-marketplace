@@ -93,7 +93,7 @@ const CompleteSignUp = () => {
     }
   };
 
-  if (loading) {
+  if (loading || !user?.emailVerified || userData?.completeSignUp) {
     return <div>Loading...</div>;
   }
 
