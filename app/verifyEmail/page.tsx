@@ -11,21 +11,21 @@ const VerifyEmail = () => {
 
   useEffect(() => {
     const checkEmailVerification = async () => {
-      if (user) {
-        // Check if the user's email is verified
-        if (user.emailVerified) {
-          // Check if user has completed sign up, (added name, etc.)
-          // Redirect to completeSignUp if not
-          if (!userData?.completeSignUp) {
-            return router.push("/completeSignUp");
-          } else {
-            return router.push("/");
-          }
-        } else {
-          // Send a verification email
-          sendEmailVerification(user);
-        }
+      if (!user) {
+        return router.push("/signIn");
       }
+
+      // Check if the user's email is verified
+      if (user.emailVerified) {
+        // Check if user has completed sign up, (added name, etc.)
+        // Redirect to completeSignUp if not
+        if (!userData?.completeSignUp) {
+          return router.push("/completeSignUp");
+        }
+        return router.push("/");
+      }
+      // Send a verification email
+      sendEmailVerification(user);
     };
 
     if (!loading && !errorUser) {
@@ -33,12 +33,14 @@ const VerifyEmail = () => {
     }
   }, [user, loading, errorUser, userData]);
 
+  const handleSendEmailVerification = async () => {
+    if (user) {
+      sendEmailVerification(user);
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
-  }
-
-  if (!user) {
-    return router.push("/signIn");
   }
 
   return (
@@ -48,7 +50,7 @@ const VerifyEmail = () => {
           Please verify your email. A verification email has been sent to your
           email address. Reload this page after verifying your email.
         </p>
-        <button onClick={() => sendEmailVerification(user)}>
+        <button onClick={handleSendEmailVerification}>
           Resend Verification Email
         </button>
       </div>
