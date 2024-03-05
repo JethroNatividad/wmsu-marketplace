@@ -51,6 +51,7 @@ const VerifyEmail = () => {
           <h1 className="text-4xl font-bold">Verify Your Email</h1>
           <p>
             Account Created Successfully. Please verify your email to continue.
+            Refresh this page after verifying your email.
           </p>
           <button
             className="btn btn-primary w-full"

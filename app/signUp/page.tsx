@@ -74,7 +74,7 @@ const SignUp = () => {
       const userRef = doc(db, "users", user.uid);
       await setDoc(userRef, {
         email: user.email,
-        completeSignUp: true,
+        completeSignUp: false,
       } as UserData);
       // Redirect to verify email
       return router.push("/verifyEmail");
