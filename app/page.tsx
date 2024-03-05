@@ -25,9 +25,9 @@ const Home = () => {
         return router.push("/completeSignUp");
       }
     }
-  }, [user, loading, error]);
+  }, [user, loading, error, userData]);
 
-  if (loading) {
+  if (loading || !userData?.completeSignUp || !user?.emailVerified) {
     return <div>Loading...</div>;
   }
 
