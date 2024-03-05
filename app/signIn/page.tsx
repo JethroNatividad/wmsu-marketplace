@@ -61,13 +61,7 @@ const SignIn = () => {
   return (
     <div className="flex h-screen">
       <div className="hidden lg:block w-1/2 h-full relative overflow-hidden">
-        <Image
-          objectFit="cover"
-          objectPosition="center"
-          layout="fill"
-          src={authHeroImage}
-          alt="hero"
-        />
+        <Image className="object-cover" fill src={authHeroImage} alt="hero" />
       </div>
       <div className="w-full lg:w-1/2 h-full flex lg:items-center justify-center">
         <form
