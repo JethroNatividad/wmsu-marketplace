@@ -1,5 +1,6 @@
 "use client";
 
+import Navbar from "@/components/Navbar";
 import useUserState from "@/hooks/useUserState";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -32,14 +33,18 @@ const Home = () => {
   }
 
   return (
-    <main>
-      <h1>
-        Hello, {userData?.firstName} {userData?.middleName} {userData?.lastName}
-      </h1>
-      <p>Email: {userData?.email}</p>
-      <p>Course: {userData?.course}</p>
-      <p>Preferred Campus: {userData?.preferredCampus}</p>
-    </main>
+    <>
+      <Navbar />
+      <main>
+        <h1>
+          Hello, {userData?.firstName} {userData?.middleName}{" "}
+          {userData?.lastName}
+        </h1>
+        <p>Email: {userData?.email}</p>
+        <p>Course: {userData?.course}</p>
+        <p>Preferred Campus: {userData?.preferredCampus}</p>
+      </main>
+    </>
   );
 };
 
