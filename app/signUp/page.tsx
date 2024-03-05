@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   LiteralUnion,
   RegisterOptions,
@@ -45,6 +45,7 @@ const errorMessages: ErrorMessages = {
 };
 
 const SignUp = () => {
+  const [sending, setSending] = useState(false);
   const router = useRouter();
 
   const {
@@ -64,6 +65,7 @@ const SignUp = () => {
         type: "match",
       });
     }
+    setSending(true);
     try {
       const { user } = await createUserWithEmailAndPassword(
         auth,
@@ -80,6 +82,8 @@ const SignUp = () => {
         middleName: "",
         preferredCampus: "",
       });
+
+      setSending(false);
       // Redirect to verify email
       return router.push("/verifyEmail");
     } catch (error) {
@@ -87,6 +91,8 @@ const SignUp = () => {
         type: "server",
         message: (error as Error).message,
       });
+
+      setSending(false);
     }
   };
 
@@ -176,8 +182,13 @@ const SignUp = () => {
             </div>
           </label>
 
-          <button className="btn btn-primary w-full" type="submit">
+          <button
+            className="btn btn-primary w-full"
+            disabled={sending}
+            type="submit"
+          >
             Create account
+            {sending && <span className="loading loading-spinner"></span>}
           </button>
 
           <p className="text-sm mt-2">
