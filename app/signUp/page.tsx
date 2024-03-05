@@ -10,7 +10,7 @@ import {
 import { auth, db } from "@/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { UserData, userRef } from "@/models/UserData";
+import { UserData, userRef } from "@/models/User";
 import { doc, setDoc } from "firebase/firestore";
 import Image from "next/image";
 import authHeroImage from "@/assets/images/auth-hero.png";

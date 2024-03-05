@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getDoc } from "firebase/firestore";
 import { auth } from "@/firebase";
-import { UserData, userRef } from "@/models/UserData";
+import { UserData, userRef } from "@/models/User";
 
 const useUserState = () => {
   const [user, loadingUser, errorUser] = useAuthState(auth);

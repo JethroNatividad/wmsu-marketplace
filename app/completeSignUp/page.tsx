@@ -12,7 +12,7 @@ import { updateDoc } from "firebase/firestore";
 import useUserState from "@/hooks/useUserState";
 import Image from "next/image";
 import authHeroImage from "@/assets/images/auth-hero.png";
-import { userRef } from "@/models/UserData";
+import { userRef } from "@/models/User";
 
 type Inputs = {
   firstName: string;
