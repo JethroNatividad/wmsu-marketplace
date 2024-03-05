@@ -127,7 +127,7 @@ const SignIn = () => {
           </button>
 
           <p className="text-sm mt-2">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link className="text-primary" href="/signUp">
               Create one
             </Link>
