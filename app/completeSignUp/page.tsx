@@ -7,10 +7,12 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { db } from "../../firebase";
+import { auth, db } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { doc, setDoc } from "firebase/firestore";
 import useUserState from "@/hooks/useUserState";
+import { useAuthState } from "react-firebase-hooks/auth";
+import error from "next/error";
 
 type Inputs = {
   firstName: string;
@@ -43,18 +45,27 @@ const errorMessages: ErrorMessages = {
 };
 
 const CompleteSignUp = () => {
-  const { user, userData, loading, errorUser } = useUserState();
+  const { user, userData, loading, error } = useUserState();
   const router = useRouter();
 
   useEffect(() => {
-    if (errorUser || !user) {
-      return router.push("/signIn");
-    }
+    // - Not logged in ? redirect to /signIn : continue
+    // - user not yet verified ? redirect to /verifyEmail: continue
+    // - user already completeSignUp ? redirect to / : continue
+    if (!loading && !error) {
+      if (!user) {
+        return router.push("/signIn");
+      }
 
-    if (userData && userData.completeSignUp) {
-      return router.push("/");
+      if (!user.emailVerified) {
+        return router.push("/verifyEmail");
+      }
+
+      if (userData?.completeSignUp) {
+        return router.push("/");
+      }
     }
-  }, [loading, errorUser, userData]);
+  }, [user, loading, error]);
 
   const {
     register,
