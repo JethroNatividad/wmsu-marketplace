@@ -184,7 +184,7 @@ const SignUp = () => {
 
           <p className="text-sm mt-2">
             Already have an account?{" "}
-            <Link className="text-primary" href="/signUp">
+            <Link className="text-primary" href="/signIn">
               Sign in
             </Link>
           </p>
