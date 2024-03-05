@@ -45,6 +45,7 @@ const errorMessages: ErrorMessages = {
 const CompleteSignUp = () => {
   const { user, userData, loading, error } = useUserState();
   const router = useRouter();
+
   const courses = [
     "BS in Computer Science",
     "BS in Information Technology",
@@ -79,14 +80,24 @@ const CompleteSignUp = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async ({
+    course,
+    firstName,
+    lastName,
+    middleName,
+    preferredCampus,
+  }) => {
     if (user) {
       try {
         // Reference the user document in Firestore
         const userRef = doc(db, "users", user.uid);
 
         await setDoc(userRef, {
-          ...data,
+          firstName,
+          middleName: middleName || "",
+          lastName,
+          course,
+          preferredCampus: preferredCampus || "",
           completeSignUp: true,
         });
         // Redirect to home page after successful sign-up
@@ -111,6 +122,7 @@ const CompleteSignUp = () => {
       </div>
       <div className="w-full lg:w-1/2 h-full flex lg:items-center justify-center">
         <form
+          noValidate
           className="w-full max-w-lg px-5 py-10 lg:py-0"
           onSubmit={handleSubmit(onSubmit)}
         >
@@ -185,13 +197,15 @@ const CompleteSignUp = () => {
               <span className="label-text">Course</span>
             </div>
             <select
-              {...(register("course"),
-              {
+              {...register("course", {
                 required: true,
               })}
-              className="select select-bordered"
+              defaultValue=""
+              className={`select select-bordered w-full ${
+                errors.course && "select-error text-error"
+              }`}
             >
-              <option value="" disabled selected>
+              <option value="" disabled>
                 Select a Course
               </option>
               {courses.map((course) => (
@@ -220,20 +234,20 @@ const CompleteSignUp = () => {
               })}
               className="select select-bordered"
             >
-              {preferredCampus.map((course) => (
-                <option key={course} value={course}>
-                  {course}
+              {preferredCampus.map((campus) => (
+                <option key={campus} value={campus}>
+                  {campus}
                 </option>
               ))}
             </select>
-            <div className="label">
-              {errors.course && (
-                <span className="label-text-alt text-error">
-                  {errorMessages.course[errors.course?.type]}
-                </span>
-              )}
-            </div>
+            <div className="label"></div>
           </label>
+
+          {errors.root?.type == "server" && (
+            <span className="label-text-alt text-error">
+              {errors.root.message}
+            </span>
+          )}
 
           <button className="btn btn-primary w-full" type="submit">
             Continue
