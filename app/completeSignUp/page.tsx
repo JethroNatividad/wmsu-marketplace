@@ -13,7 +13,6 @@ import { doc, setDoc } from "firebase/firestore";
 import useUserState from "@/hooks/useUserState";
 import Image from "next/image";
 import authHeroImage from "@/assets/images/auth-hero.png";
-import Link from "next/link";
 
 type Inputs = {
   firstName: string;
@@ -51,6 +50,8 @@ const CompleteSignUp = () => {
     "BS in Information Technology",
     "BS in Computer Engineering",
   ];
+
+  const preferredCampus = ["Main campus A", "Main campus B"];
 
   useEffect(() => {
     // - Not logged in ? redirect to /signIn : continue
@@ -194,6 +195,32 @@ const CompleteSignUp = () => {
                 Select a Course
               </option>
               {courses.map((course) => (
+                <option key={course} value={course}>
+                  {course}
+                </option>
+              ))}
+            </select>
+            <div className="label">
+              {errors.course && (
+                <span className="label-text-alt text-error">
+                  {errorMessages.course[errors.course?.type]}
+                </span>
+              )}
+            </div>
+          </label>
+
+          <label className="form-control w-full">
+            <div className="label">
+              <span className="label-text">Preferred Campus</span>
+            </div>
+            <select
+              {...(register("preferredCampus"),
+              {
+                required: true,
+              })}
+              className="select select-bordered"
+            >
+              {preferredCampus.map((course) => (
                 <option key={course} value={course}>
                   {course}
                 </option>
