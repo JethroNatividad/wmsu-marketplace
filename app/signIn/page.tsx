@@ -58,14 +58,17 @@ const SignIn = () => {
   return (
     <div className="flex h-screen">
       <div className="hidden md:block w-1/2 h-full">Left</div>
-      <div className="w-full md:w-1/2 h-full">
-        <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="w-full md:w-1/2 h-full flex md:items-center justify-center">
+        <form
+          className="w-full max-w-md px-5 py-10 md:py-0"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <label className="form-control w-full">
             <div className="label">
               <span className="label-text">Email</span>
             </div>
             <input
-              className={`input input-bordered w-full max-w-md ${
+              className={`input input-bordered w-full ${
                 errors.email && "input-error text-error"
               }`}
               type="text"
@@ -90,7 +93,7 @@ const SignIn = () => {
               <span className="label-text">Password</span>
             </div>
             <input
-              className={`input input-bordered w-full max-w-md ${
+              className={`input input-bordered w-full ${
                 errors.password && "input-error text-error"
               }`}
               type="password"
@@ -108,7 +111,7 @@ const SignIn = () => {
           </label>
 
           {errors.root?.type == "server" && <p>{errors.root.message}</p>}
-          <button className="btn btn-primary" type="submit">
+          <button className="btn btn-primary w-full" type="submit">
             Sign in
           </button>
         </form>
