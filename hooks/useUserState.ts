@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { doc, getDoc } from "firebase/firestore";
@@ -41,6 +39,8 @@ const useUserState = () => {
           setErrorUserData(error as Error);
           setLoading(false);
         }
+      } else {
+        setLoading(false);
       }
     };
 
@@ -52,7 +52,7 @@ const useUserState = () => {
   return {
     user,
     userData,
-    loading: loadingUser && loading,
+    loading: loadingUser || loading,
     error: errorUserData || errorUser,
   };
 };
