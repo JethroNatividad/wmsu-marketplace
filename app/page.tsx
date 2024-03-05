@@ -34,7 +34,7 @@ const Home = () => {
 
   return (
     <Layout>
-      <main>
+      <main className="p-5">
         <h1>
           Hello, {userData?.firstName} {userData?.middleName}{" "}
           {userData?.lastName}
