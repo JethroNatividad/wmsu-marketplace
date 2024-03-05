@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   LiteralUnion,
   RegisterOptions,
@@ -130,6 +131,13 @@ const SignIn = () => {
           <button className="btn btn-primary w-full" type="submit">
             Sign in
           </button>
+
+          <p className="text-sm mt-2">
+            Don't have an account?{" "}
+            <Link className="text-primary" href="/signUp">
+              Create one
+            </Link>
+          </p>
         </form>
       </div>
     </div>
