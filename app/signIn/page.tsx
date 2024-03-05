@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import {
   LiteralUnion,
   RegisterOptions,
@@ -10,6 +11,7 @@ import {
 import { auth } from "@/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import authHeroImage from "@/assets/images/auth-hero.png";
 
 type Inputs = {
   email: string;
@@ -57,12 +59,21 @@ const SignIn = () => {
 
   return (
     <div className="flex h-screen">
-      <div className="hidden md:block w-1/2 h-full">Left</div>
-      <div className="w-full md:w-1/2 h-full flex md:items-center justify-center">
+      <div className="hidden lg:block w-1/2 h-full relative overflow-hidden">
+        <Image
+          objectFit="cover"
+          objectPosition="center"
+          layout="fill"
+          src={authHeroImage}
+          alt="hero"
+        />
+      </div>
+      <div className="w-full lg:w-1/2 h-full flex lg:items-center justify-center">
         <form
-          className="w-full max-w-md px-5 py-10 md:py-0"
+          className="w-full max-w-lg px-5 py-10 lg:py-0"
           onSubmit={handleSubmit(onSubmit)}
         >
+          <h1 className="text-4xl font-bold mb-5">Sign In</h1>
           <label className="form-control w-full">
             <div className="label">
               <span className="label-text">Email</span>
@@ -107,10 +118,15 @@ const SignIn = () => {
                   {errorMessages.password[errors.password?.type]}
                 </span>
               )}
+
+              {errors.root?.type == "server" && (
+                <span className="label-text-alt text-error">
+                  {errors.root.message}
+                </span>
+              )}
             </div>
           </label>
 
-          {errors.root?.type == "server" && <p>{errors.root.message}</p>}
           <button className="btn btn-primary w-full" type="submit">
             Sign in
           </button>
