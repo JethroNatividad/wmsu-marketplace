@@ -3,7 +3,7 @@
 import useUserState from "@/hooks/useUserState";
 import { UserData } from "@/models/User";
 import { User } from "firebase/auth";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { createContext, useEffect } from "react";
 
 type AuthContextType = {
@@ -21,8 +21,21 @@ const AuthContext = createContext<AuthContextType>({
 export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const { user, userData, loading, error } = useUserState();
   const router = useRouter();
+  const pathname = usePathname();
 
+  // Don't run in "/signIn, /signUp, /verifyEmail, /completeSignUp"
   useEffect(() => {
+    // Check if the current route is one of the specified ones
+    const excludedRoutes = [
+      "/signIn",
+      "/signUp",
+      "/verifyEmail",
+      "/completeSignUp",
+    ];
+    if (excludedRoutes.includes(pathname)) {
+      // If it is, exit the useEffect hook early
+      return;
+    }
     // - Not logged in ? redirect to /signIn : continue
     // - user not yet verified ? redirect to /verifyEmail: continue
     // - User not yetcompleteSignUp ? redirect to /completeSignUp  : continue
@@ -43,7 +56,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
     console.log("user", user);
     console.log("userData", userData);
     console.log("loading", loading);
-  }, [user, loading, error, userData]);
+  }, [user, loading, error, userData, pathname]);
 
   return (
     <AuthContext.Provider
