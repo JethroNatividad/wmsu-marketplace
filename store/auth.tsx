@@ -12,6 +12,7 @@ type AuthContextType = {
   user: User | null | undefined;
   loading: boolean;
   error: Error | null | undefined;
+  setUserData: React.Dispatch<React.SetStateAction<UserData | null>>;
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -19,6 +20,7 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   error: null,
+  setUserData: () => {},
 });
 
 export const AuthProvider = ({ children }: React.PropsWithChildren) => {
@@ -110,6 +112,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
         user,
         loading: loading,
         error: errorUserData || errorUser,
+        setUserData,
       }}
     >
       {children}

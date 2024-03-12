@@ -47,7 +47,7 @@ const errorMessages: ErrorMessages = {
 };
 
 const CompleteSignUp = () => {
-  const { error, loading, user, userData } = useAuth();
+  const { error, loading, user, userData, setUserData } = useAuth();
   const [sending, setSending] = useState(false);
   const router = useRouter();
 
@@ -88,7 +88,7 @@ const CompleteSignUp = () => {
     middleName,
     preferredCampus,
   }) => {
-    if (user) {
+    if (user && userData) {
       setSending(true);
       try {
         // Reference the user document in Firestore
@@ -101,6 +101,18 @@ const CompleteSignUp = () => {
           preferredCampus: preferredCampus || "",
           completeSignUp: true,
         });
+
+        // Update the user data in the store
+        setUserData({
+          ...userData,
+          firstName,
+          middleName: middleName || "",
+          lastName,
+          course,
+          preferredCampus: preferredCampus || "",
+          completeSignUp: true,
+        });
+
         setSending(false);
         // Redirect to home page after successful sign-up
         router.push("/");
