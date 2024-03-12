@@ -2,33 +2,13 @@
 
 import Layout from "@/components/Layout";
 import PageLoading from "@/components/PageLoading";
-import useUserState from "@/hooks/useUserState";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import useAuthRedirect from "@/hooks/useAuthRedirect";
+import { useAuth } from "@/store/auth";
 
 const Home = () => {
-  const { user, userData, loading, error } = useUserState();
-  const router = useRouter();
+  const { loading, userData, user } = useAuth();
 
-  useEffect(() => {
-    // - Not logged in ? redirect to /signIn : continue
-    // - user not yet verified ? redirect to /verifyEmail: continue
-    // - User not yetcompleteSignUp ? redirect to /completeSignUp  : continue
-    if (!loading && !error) {
-      if (!user || !userData) {
-        return router.push("/signIn");
-      }
-
-      if (!user.emailVerified) {
-        return router.push("/verifyEmail");
-      }
-
-      if (!userData.completeSignUp) {
-        return router.push("/completeSignUp");
-      }
-    }
-  }, [user, loading, error, userData]);
-
+  useAuthRedirect();
   if (loading || !userData?.completeSignUp || !user?.emailVerified) {
     return <PageLoading />;
   }
