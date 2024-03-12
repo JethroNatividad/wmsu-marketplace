@@ -7,6 +7,7 @@ import { auth } from "@/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import authHeroImage from "@/assets/images/auth-hero.png";
 import Image from "next/image";
+import PageLoading from "@/components/PageLoading";
 
 const VerifyEmail = () => {
   const [user, loading, error] = useAuthState(auth);
@@ -37,7 +38,7 @@ const VerifyEmail = () => {
   };
 
   if (loading || !user || user.emailVerified) {
-    return <p>Loading...</p>;
+    return <PageLoading />;
   }
 
   return (
