@@ -1,7 +1,16 @@
+import { auth } from "@/firebase";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
+import { useSignOut } from "react-firebase-hooks/auth";
 
 const Navbar = () => {
+  const router = useRouter();
+  const [signOut] = useSignOut(auth);
+  const handleSignOut = async () => {
+    router.push("/signIn");
+    await signOut();
+  };
   return (
     <header className="navbar bg-base-100 shadow-md">
       <div className="flex-1">
@@ -53,7 +62,7 @@ const Navbar = () => {
               <a>Settings</a>
             </li>
             <li>
-              <a>Logout</a>
+              <button onClick={handleSignOut}>Logout</button>
             </li>
           </ul>
         </div>
