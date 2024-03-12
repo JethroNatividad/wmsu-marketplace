@@ -27,39 +27,44 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [errorUserData, setErrorUserData] = useState<Error | null>(null);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (user) {
-        try {
-          const userDataSnapshot = await getDoc(userRef(user.uid));
-          if (userDataSnapshot.exists()) {
-            const data = userDataSnapshot.data() as UserData;
-            setUserData({
-              completeSignUp: data.completeSignUp,
-              firstName: data.firstName,
-              middleName: data.middleName,
-              lastName: data.lastName,
-              course: data.course,
-              preferredCampus: data.preferredCampus,
-              email: data.email || user.email || "",
-            });
-            setLoading(false);
-          } else {
-            console.error("User data not found");
-            setLoading(false);
-          }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-          setErrorUserData(error as Error);
-          setLoading(false);
-        }
+  const fetchUserData = async (user: User): Promise<UserData | null> => {
+    try {
+      const userDataSnapshot = await getDoc(userRef(user.uid));
+      if (userDataSnapshot.exists()) {
+        return userDataSnapshot.data() as UserData;
       } else {
+        console.error("User data not found");
+        return null;
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    const fn = async () => {
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const data = await fetchUserData(user);
+        if (!data) {
+          setLoading(false);
+          return;
+        }
+        setUserData(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        setErrorUserData(error as Error);
         setLoading(false);
       }
     };
 
     if (!loadingUser && !errorUser) {
-      fetchUserData();
+      fn();
     }
   }, [user, loadingUser, errorUser]);
 
