@@ -8,8 +8,8 @@ const Navbar = () => {
   const router = useRouter();
   const [signOut] = useSignOut(auth);
   const handleSignOut = async () => {
-    router.push("/signIn");
     await signOut();
+    router.push("/signIn");
   };
   return (
     <header className="navbar bg-base-100 shadow-md">
