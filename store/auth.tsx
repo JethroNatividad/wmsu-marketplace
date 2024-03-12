@@ -70,41 +70,6 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
     }
   }, [user, loadingUser, errorUser]);
 
-  // Don't run in "/signIn, /signUp, /verifyEmail, /completeSignUp"
-  //   useEffect(() => {
-  //     // Check if the current route is one of the specified ones
-  //     const excludedRoutes = [
-  //       "/signIn",
-  //       "/signUp",
-  //       "/verifyEmail",
-  //       "/completeSignUp",
-  //     ];
-  //     if (excludedRoutes.includes(pathname)) {
-  //       // If it is, exit the useEffect hook early
-  //       return;
-  //     }
-  //     // - Not logged in ? redirect to /signIn : continue
-  //     // - user not yet verified ? redirect to /verifyEmail: continue
-  //     // - User not yetcompleteSignUp ? redirect to /completeSignUp  : continue
-  //     if (!loading && !error) {
-  //       if (!user || !userData) {
-  //         return router.push("/signIn");
-  //       }
-
-  //       if (!user.emailVerified) {
-  //         return router.push("/verifyEmail");
-  //       }
-
-  //       if (!userData.completeSignUp) {
-  //         return router.push("/completeSignUp");
-  //       }
-  //     }
-
-  //     console.log("user", user);
-  //     console.log("userData", userData);
-  //     console.log("loading", loading);
-  //   }, [user, loading, error, userData, pathname]);
-
   return (
     <AuthContext.Provider
       value={{
