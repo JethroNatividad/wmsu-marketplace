@@ -2,12 +2,8 @@
 
 import Layout from "@/components/Layout";
 import PageLoading from "@/components/PageLoading";
-import { auth } from "@/firebase";
-import useUserState from "@/hooks/useUserState";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import useAuthRedirect from "@/hooks/useAuthRedirect";
+import { useAuth } from "@/store/auth";
 import {
   LiteralUnion,
   RegisterOptions,
@@ -59,8 +55,10 @@ const errorMessages: ErrorMessages = {
 };
 
 const ManageListing = () => {
-  const { user, userData, loading, error } = useUserState();
-  const router = useRouter();
+  const { loading, userData, user } = useAuth();
+
+  useAuthRedirect();
+
   const {
     register,
     handleSubmit,
@@ -80,25 +78,6 @@ const ManageListing = () => {
     }
   };
 
-  useEffect(() => {
-    // - Not logged in ? redirect to /signIn : continue
-    // - user not yet verified ? redirect to /verifyEmail: continue
-    // - User not yetcompleteSignUp ? redirect to /completeSignUp  : continue
-    if (!loading && !error) {
-      if (!user || !userData) {
-        return router.push("/signIn");
-      }
-
-      if (!user.emailVerified) {
-        return router.push("/verifyEmail");
-      }
-
-      if (!userData.completeSignUp) {
-        return router.push("/completeSignUp");
-      }
-    }
-  }, [user, loading, error, userData]);
-
   if (loading || !userData?.completeSignUp || !user?.emailVerified) {
     return <PageLoading />;
   }
@@ -106,6 +85,7 @@ const ManageListing = () => {
   return (
     <Layout>
       <main className="p-5">
+        <p>{userData?.firstName}</p>
         <h1 className="text-2xl font-bold">New Item For Sale</h1>
         <form
           className="w-full px-5 py-10 lg:py-0"
