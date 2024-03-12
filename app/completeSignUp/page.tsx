@@ -9,11 +9,11 @@ import {
 } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { updateDoc } from "firebase/firestore";
-import useUserState from "@/hooks/useUserState";
 import Image from "next/image";
 import authHeroImage from "@/assets/images/auth-hero.png";
 import { userRef } from "@/models/User";
 import PageLoading from "@/components/PageLoading";
+import { useAuth } from "@/store/auth";
 
 type Inputs = {
   firstName: string;
@@ -47,9 +47,8 @@ const errorMessages: ErrorMessages = {
 };
 
 const CompleteSignUp = () => {
+  const { error, loading, user, userData } = useAuth();
   const [sending, setSending] = useState(false);
-
-  const { user, userData, loading, error } = useUserState();
   const router = useRouter();
 
   const courses = ["BSCS", "BSIT", "BSCpE"];
