@@ -7,7 +7,6 @@ import { auth } from "@/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import authHeroImage from "@/assets/images/auth-hero.png";
 import Image from "next/image";
-import { set } from "firebase/database";
 
 const VerifyEmail = () => {
   const [user, loading, error] = useAuthState(auth);
