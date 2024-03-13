@@ -57,6 +57,13 @@ const errorMessages: ErrorMessages = {
 const ManageListing = () => {
   const { loading, userData, user } = useAuth();
 
+  const conditions = {
+    new: "New",
+    usedLikeNew: "Used - Like New",
+    usedGood: "Used - Good",
+    usedFair: "Used - Fair",
+  };
+
   useAuthRedirect();
 
   const {
@@ -157,6 +164,30 @@ const ManageListing = () => {
                   <div className="label"></div>
                 </label>
               </div>
+
+              <label className="form-control w-full">
+                <div className="label">
+                  <span className="label-text">Condition</span>
+                </div>
+                <select
+                  {...register("condition", {
+                    required: true,
+                  })}
+                  defaultValue=""
+                  className={`select select-bordered w-full ${
+                    errors.condition && "select-error text-error"
+                  }`}
+                >
+                  <option value="" disabled>
+                    Select condition
+                  </option>
+                  {Object.entries(conditions).map(([k, v]) => (
+                    <option key={k} value={k}>
+                      {v}
+                    </option>
+                  ))}
+                </select>
+              </label>
             </div>
           </div>
         </form>
