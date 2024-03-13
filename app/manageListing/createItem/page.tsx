@@ -91,9 +91,9 @@ const ManageListing = () => {
           className="w-full px-5 py-10 lg:py-0"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className="flex">
-            <div className="w-1/2">Image</div>
-            <div className="w-1/2">
+          <div className="flex flex-col lg:flex-row ">
+            <div className="w-full lg:w-1/2">Image</div>
+            <div className="w-full lg:w-1/2">
               <label className="form-control w-full">
                 <div className="label">
                   <span className="label-text">Item Name</span>
@@ -127,7 +127,7 @@ const ManageListing = () => {
                       errors.price && "input-error text-error"
                     }`}
                     type="number"
-                    placeholder="iPhone 12 Pro Max"
+                    placeholder="₱0"
                     {...register("price", {
                       required: true,
                     })}
@@ -149,7 +149,7 @@ const ManageListing = () => {
                       errors.discount && "input-error text-error"
                     }`}
                     type="number"
-                    placeholder="iPhone 12 Pro Max"
+                    placeholder="₱0"
                     {...register("discount", {
                       required: true,
                     })}
