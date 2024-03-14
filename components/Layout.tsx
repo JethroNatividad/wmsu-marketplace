@@ -49,7 +49,7 @@ const Layout = ({
                 <ul>
                   {categories.map((category) => (
                     <li key={category.id}>
-                      <Link href={`/category/${category.id}`}>
+                      <Link href={`/category/${category.key}`}>
                         {category.name}
                       </Link>
                     </li>
