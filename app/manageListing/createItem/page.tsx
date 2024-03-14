@@ -3,6 +3,7 @@
 import Layout from "@/components/Layout";
 import PageLoading from "@/components/PageLoading";
 import useAuthRedirect from "@/hooks/useAuthRedirect";
+import useCategory from "@/hooks/useCategory";
 import { useAuth } from "@/store/auth";
 import {
   LiteralUnion,
@@ -56,6 +57,11 @@ const errorMessages: ErrorMessages = {
 
 const ManageListing = () => {
   const { loading, userData, user } = useAuth();
+  const {
+    categories,
+    loading: loadingCategories,
+    error: errorCategories,
+  } = useCategory();
 
   const conditions = {
     new: "New",
@@ -179,7 +185,7 @@ const ManageListing = () => {
                   }`}
                 >
                   <option value="" disabled>
-                    Select condition
+                    Select Condition
                   </option>
                   {Object.entries(conditions).map(([k, v]) => (
                     <option key={k} value={k}>
@@ -187,6 +193,48 @@ const ManageListing = () => {
                     </option>
                   ))}
                 </select>
+                <div className="label">
+                  {errors.itemName && (
+                    <span className="label-text-alt text-error">
+                      {errorMessages.itemName[errors.itemName?.type]}
+                    </span>
+                  )}
+                </div>
+              </label>
+
+              <label className="form-control w-full">
+                <div className="label">
+                  <span className="label-text">Category</span>
+                </div>
+                <select
+                  {...register("category", {
+                    required: true,
+                  })}
+                  defaultValue=""
+                  className={`select select-bordered w-full ${
+                    errors.category && "select-error text-error"
+                  }`}
+                >
+                  <option value="" disabled>
+                    {loadingCategories
+                      ? "Loading Categories"
+                      : errorCategories
+                      ? "Error Loading Categories"
+                      : "Select Category"}
+                  </option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.key}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+                <div className="label">
+                  {errors.itemName && (
+                    <span className="label-text-alt text-error">
+                      {errorMessages.itemName[errors.itemName?.type]}
+                    </span>
+                  )}
+                </div>
               </label>
             </div>
           </div>
