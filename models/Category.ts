@@ -5,4 +5,8 @@ export interface Category {
   description: string;
 }
 
+export interface CategoryWithId extends Category {
+  id: string;
+}
+
 export const categoriesRef = createCollection<Category>("categories");
