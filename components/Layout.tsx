@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Navbar from "./Navbar";
+import useCategory from "@/hooks/useCategory";
 import Link from "next/link";
 
 const Layout = ({
@@ -7,6 +10,7 @@ const Layout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  const { categories, error, loading } = useCategory();
   return (
     <>
       <Navbar />
@@ -43,12 +47,13 @@ const Layout = ({
                   Categories
                 </summary>
                 <ul>
-                  <li>
-                    <a>Submenu 1</a>
-                  </li>
-                  <li>
-                    <a>Submenu 2</a>
-                  </li>
+                  {categories.map((category) => (
+                    <li key={category.id}>
+                      <Link href={`/category/${category.id}`}>
+                        {category.name}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </details>
             </li>
