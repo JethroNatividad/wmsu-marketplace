@@ -47,6 +47,11 @@ const Layout = ({
                   Categories
                 </summary>
                 <ul>
+                  {categoriesLoading && (
+                    <li className="skeleton rounded-lg">
+                      <Link href="#">Loading</Link>
+                    </li>
+                  )}
                   {categories.map((category) => (
                     <li key={category.id}>
                       <Link href={`/category/${category.key}`}>
