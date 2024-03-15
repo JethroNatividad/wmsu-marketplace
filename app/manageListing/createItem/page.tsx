@@ -194,9 +194,9 @@ const ManageListing = () => {
                   ))}
                 </select>
                 <div className="label">
-                  {errors.itemName && (
+                  {errors.condition && (
                     <span className="label-text-alt text-error">
-                      {errorMessages.itemName[errors.itemName?.type]}
+                      {errorMessages.condition[errors.condition?.type]}
                     </span>
                   )}
                 </div>
@@ -229,14 +229,39 @@ const ManageListing = () => {
                   ))}
                 </select>
                 <div className="label">
-                  {errors.itemName && (
+                  {errors.condition && (
                     <span className="label-text-alt text-error">
-                      {errorMessages.itemName[errors.itemName?.type]}
+                      {errorMessages.condition[errors.condition?.type]}
                     </span>
                   )}
                 </div>
               </label>
             </div>
+          </div>
+
+          <div>
+            <label className="form-control w-full">
+              <div className="label">
+                <span className="label-text">Description</span>
+              </div>
+              <input
+                className={`input input-bordered w-full ${
+                  errors.description && "input-error text-error"
+                }`}
+                type="text"
+                placeholder="iPhone 12 Pro Max"
+                {...register("description", {
+                  required: true,
+                })}
+              />
+              <div className="label">
+                {errors.description && (
+                  <span className="label-text-alt text-error">
+                    {errorMessages.description[errors.description?.type]}
+                  </span>
+                )}
+              </div>
+            </label>
           </div>
         </form>
       </main>
