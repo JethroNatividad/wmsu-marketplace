@@ -59,8 +59,6 @@ const CompleteSignUp = () => {
 
   const courses = ["BSCS", "BSIT", "BSCpE"];
 
-  const preferredCampus = ["Main Campus A", "Main Campus B"];
-
   useEffect(() => {
     // - Not logged in ? redirect to /signIn : continue
     // - user not yet verified ? redirect to /verifyEmail: continue
