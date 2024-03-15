@@ -28,7 +28,7 @@ const useCampus = () => {
     fetchCampuses();
   }, []);
 
-  return { loading, error, campuses };
+  return { campusesLoading: loading, campusesError: error, campuses };
 };
 
 export default useCampus;

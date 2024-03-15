@@ -49,11 +49,7 @@ const errorMessages: ErrorMessages = {
 
 const CompleteSignUp = () => {
   const { error, loading, user, userData, setUserData } = useAuth();
-  const {
-    campuses,
-    error: errorCampuses,
-    loading: loadingCampuses,
-  } = useCampus();
+  const { campuses, campusesError, campusesLoading } = useCampus();
   const [sending, setSending] = useState(false);
   const router = useRouter();
 
@@ -257,9 +253,9 @@ const CompleteSignUp = () => {
               defaultValue=""
             >
               <option value="" disabled>
-                {loadingCampuses
+                {campusesLoading
                   ? "Loading Campuses"
-                  : errorCampuses
+                  : campusesError
                   ? "Error Loading Campuses"
                   : "Select Campus"}
               </option>
