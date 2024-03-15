@@ -28,7 +28,7 @@ const useCourse = () => {
     fetchCourses();
   }, []);
 
-  return { loading, error, courses };
+  return { coursesLoading: loading, coursesError: error, courses };
 };
 
 export default useCourse;
