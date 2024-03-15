@@ -14,6 +14,7 @@ import authHeroImage from "@/assets/images/auth-hero.png";
 import { userRef } from "@/models/User";
 import PageLoading from "@/components/PageLoading";
 import { useAuth } from "@/store/auth";
+import useCampus from "@/hooks/useCampus";
 
 type Inputs = {
   firstName: string;
@@ -48,6 +49,11 @@ const errorMessages: ErrorMessages = {
 
 const CompleteSignUp = () => {
   const { error, loading, user, userData, setUserData } = useAuth();
+  const {
+    campuses,
+    error: errorCampuses,
+    loading: loadingCampuses,
+  } = useCampus();
   const [sending, setSending] = useState(false);
   const router = useRouter();
 
@@ -253,11 +259,15 @@ const CompleteSignUp = () => {
               defaultValue=""
             >
               <option value="" disabled>
-                Select Preferred Campus
+                {loadingCampuses
+                  ? "Loading Campuses"
+                  : errorCampuses
+                  ? "Error Loading Campuses"
+                  : "Select Campus"}
               </option>
-              {preferredCampus.map((campus) => (
-                <option key={campus} value={campus}>
-                  {campus}
+              {campuses.map((campus) => (
+                <option key={campus.id} value={campus.key}>
+                  {campus.name}
                 </option>
               ))}
             </select>
