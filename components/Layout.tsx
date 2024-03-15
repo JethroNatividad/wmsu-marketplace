@@ -10,7 +10,7 @@ const Layout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const { categories, error, loading } = useCategory();
+  const { categories, categoriesError, categoriesLoading } = useCategory();
   return (
     <>
       <Navbar />
