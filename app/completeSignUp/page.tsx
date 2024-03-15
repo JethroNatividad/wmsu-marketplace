@@ -15,6 +15,7 @@ import { userRef } from "@/models/User";
 import PageLoading from "@/components/PageLoading";
 import { useAuth } from "@/store/auth";
 import useCampus from "@/hooks/useCampus";
+import useCourse from "@/hooks/useCourse";
 
 type Inputs = {
   firstName: string;
@@ -50,10 +51,11 @@ const errorMessages: ErrorMessages = {
 const CompleteSignUp = () => {
   const { error, loading, user, userData, setUserData } = useAuth();
   const { campuses, campusesError, campusesLoading } = useCampus();
+  const { courses, coursesError, coursesLoading } = useCourse();
   const [sending, setSending] = useState(false);
   const router = useRouter();
 
-  const courses = ["BSCS", "BSIT", "BSCpE"];
+  // const courses = ["BSCS", "BSIT", "BSCpE"];
 
   useEffect(() => {
     // - Not logged in ? redirect to /signIn : continue
@@ -222,11 +224,15 @@ const CompleteSignUp = () => {
               }`}
             >
               <option value="" disabled>
-                Select Course
+                {coursesLoading
+                  ? "Loading Courses"
+                  : coursesError
+                  ? "Error Loading Courses"
+                  : "Select Campus"}
               </option>
               {courses.map((course) => (
-                <option key={course} value={course}>
-                  {course}
+                <option key={course.id} value={course.key}>
+                  {course.name}
                 </option>
               ))}
             </select>
