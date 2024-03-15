@@ -228,7 +228,7 @@ const CompleteSignUp = () => {
                   ? "Loading Courses"
                   : coursesError
                   ? "Error Loading Courses"
-                  : "Select Campus"}
+                  : "Select Course"}
               </option>
               {courses.map((course) => (
                 <option key={course.id} value={course.key}>
