@@ -28,7 +28,7 @@ const useCategory = () => {
     fetchCategories();
   }, []);
 
-  return { loading, error, categories };
+  return { categoriesLoading: loading, categoriesError: error, categories };
 };
 
 export default useCategory;

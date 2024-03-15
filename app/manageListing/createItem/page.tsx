@@ -57,11 +57,7 @@ const errorMessages: ErrorMessages = {
 
 const ManageListing = () => {
   const { loading, userData, user } = useAuth();
-  const {
-    categories,
-    loading: loadingCategories,
-    error: errorCategories,
-  } = useCategory();
+  const { categories, categoriesLoading, categoriesError } = useCategory();
 
   const conditions = {
     new: "New",
@@ -216,9 +212,9 @@ const ManageListing = () => {
                   }`}
                 >
                   <option value="" disabled>
-                    {loadingCategories
+                    {categoriesLoading
                       ? "Loading Categories"
-                      : errorCategories
+                      : categoriesError
                       ? "Error Loading Categories"
                       : "Select Category"}
                   </option>
