@@ -244,16 +244,15 @@ const ManageListing = () => {
               <div className="label">
                 <span className="label-text">Description</span>
               </div>
-              <input
-                className={`input input-bordered w-full ${
-                  errors.description && "input-error text-error"
-                }`}
-                type="text"
-                placeholder="iPhone 12 Pro Max"
+              <textarea
                 {...register("description", {
                   required: true,
                 })}
-              />
+                className={`textarea textarea-bordered w-full ${
+                  errors.description && "textarea-error text-error"
+                }`}
+                placeholder="Item Description"
+              ></textarea>
               <div className="label">
                 {errors.description && (
                   <span className="label-text-alt text-error">
