@@ -337,7 +337,9 @@ const ManageListing = () => {
                     onClick={() => removeTag(tag)}
                   >
                     {tag}
-                    <button className="ml-2">×</button>
+                    <button type="button" className="ml-2">
+                      ×
+                    </button>
                   </span>
                 ))}
               </div>
