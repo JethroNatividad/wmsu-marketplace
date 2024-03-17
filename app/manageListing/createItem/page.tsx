@@ -58,7 +58,14 @@ const errorMessages: ErrorMessages = {
 
 const ManageListing = () => {
   const { loading, userData, user } = useAuth();
-  const { categories, categoriesLoading, categoriesError } = useApp();
+  const {
+    categories,
+    categoriesLoading,
+    categoriesError,
+    campuses,
+    campusesError,
+    campusesLoading,
+  } = useApp();
 
   const conditions = {
     new: "New",
@@ -254,6 +261,41 @@ const ManageListing = () => {
                 {errors.description && (
                   <span className="label-text-alt text-error">
                     {errorMessages.description[errors.description?.type]}
+                  </span>
+                )}
+              </div>
+            </label>
+
+            <label className="form-control w-full">
+              <div className="label">
+                <span className="label-text">Campus</span>
+              </div>
+              <select
+                {...register("campus", {
+                  required: true,
+                })}
+                defaultValue=""
+                className={`select select-bordered w-full ${
+                  errors.campus && "select-error text-error"
+                }`}
+              >
+                <option value="" disabled>
+                  {campusesLoading
+                    ? "Loading Campuses"
+                    : campusesError
+                    ? "Error Loading Campuses"
+                    : "Select Campus"}
+                </option>
+                {campuses.map((campus) => (
+                  <option key={campus.id} value={campus.key}>
+                    {campus.name}
+                  </option>
+                ))}
+              </select>
+              <div className="label">
+                {errors.campus && (
+                  <span className="label-text-alt text-error">
+                    {errorMessages.campus[errors.campus?.type]}
                   </span>
                 )}
               </div>
