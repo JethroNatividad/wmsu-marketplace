@@ -3,7 +3,6 @@
 import Layout from "@/components/Layout";
 import PageLoading from "@/components/PageLoading";
 import useAuthRedirect from "@/hooks/useAuthRedirect";
-import useCategory from "@/hooks/useCategory";
 import { useApp } from "@/store/app";
 import { useAuth } from "@/store/auth";
 import {
