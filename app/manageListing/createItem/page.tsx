@@ -338,12 +338,19 @@ const ManageListing = () => {
                   >
                     {tag}
                     <button type="button" className="ml-2">
-                      ×
+                      x
                     </button>
                   </span>
                 ))}
               </div>
             </label>
+          </div>
+
+          <div className="space-x-3 flex justify-end mt-5">
+            <button className="btn btn-primary btn-outline">Discard</button>
+            <button type="submit" className="btn btn-primary">
+              Submit
+            </button>
           </div>
         </form>
       </main>
