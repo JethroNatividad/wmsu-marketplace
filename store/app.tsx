@@ -1,13 +1,26 @@
 "use client";
 
+import useCampus from "@/hooks/useCampus";
+import { CampusWithId } from "@/models/Campus";
 import { createContext, useContext } from "react";
 
-type AppContextType = {};
+type AppContextType = {
+  campuses: CampusWithId[];
+  campusesLoading: boolean;
+};
 
-const AppContext = createContext<AppContextType>({});
+const AppContext = createContext<AppContextType>({
+  campuses: [],
+  campusesLoading: true,
+});
 
 export const AppProvider = ({ children }: React.PropsWithChildren) => {
-  return <AppContext.Provider value={{}}>{children}</AppContext.Provider>;
+  const { campuses, campusesLoading } = useCampus();
+  return (
+    <AppContext.Provider value={{ campuses, campusesLoading }}>
+      {children}
+    </AppContext.Provider>
+  );
 };
 
 export default AppContext;
