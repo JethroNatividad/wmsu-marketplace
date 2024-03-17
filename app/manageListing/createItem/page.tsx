@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import PageLoading from "@/components/PageLoading";
 import useAuthRedirect from "@/hooks/useAuthRedirect";
 import useCategory from "@/hooks/useCategory";
+import { useApp } from "@/store/app";
 import { useAuth } from "@/store/auth";
 import {
   LiteralUnion,
@@ -57,7 +58,7 @@ const errorMessages: ErrorMessages = {
 
 const ManageListing = () => {
   const { loading, userData, user } = useAuth();
-  const { categories, categoriesLoading, categoriesError } = useCategory();
+  const { categories, categoriesLoading, categoriesError } = useApp();
 
   const conditions = {
     new: "New",
