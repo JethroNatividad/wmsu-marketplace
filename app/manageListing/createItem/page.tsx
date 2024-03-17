@@ -5,6 +5,7 @@ import PageLoading from "@/components/PageLoading";
 import useAuthRedirect from "@/hooks/useAuthRedirect";
 import { useApp } from "@/store/app";
 import { useAuth } from "@/store/auth";
+import { useState } from "react";
 import {
   LiteralUnion,
   RegisterOptions,
@@ -65,6 +66,7 @@ const ManageListing = () => {
     campusesError,
     campusesLoading,
   } = useApp();
+  const [tags, setTags] = useState<string[]>([]);
 
   const conditions = {
     new: "New",
@@ -92,6 +94,21 @@ const ManageListing = () => {
         message: (error as Error).message,
       });
     }
+  };
+
+  const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const newTag = e.currentTarget.value.trim();
+      if (newTag && !tags.includes(newTag)) {
+        setTags([...tags, newTag]);
+        e.currentTarget.value = "";
+      }
+    }
+  };
+
+  const removeTag = (tag: string) => {
+    setTags(tags.filter((t) => t !== tag));
   };
 
   if (loading || !userData?.completeSignUp || !user?.emailVerified) {
@@ -297,6 +314,32 @@ const ManageListing = () => {
                     {errorMessages.campus[errors.campus?.type]}
                   </span>
                 )}
+              </div>
+            </label>
+
+            <label className="form-control w-full">
+              <div className="label">
+                <span className="label-text">Tags</span>
+              </div>
+              <div className="input-group">
+                <input
+                  type="text"
+                  placeholder="Enter a tag"
+                  className="input input-bordered w-full text-sm"
+                  onKeyDown={handleTagKeyDown}
+                />
+              </div>
+              <div className="mt-2">
+                {tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="badge badge-primary mr-2 mb-2 cursor-pointer text-sm rounded-md p-3"
+                    onClick={() => removeTag(tag)}
+                  >
+                    {tag}
+                    <button className="ml-2">×</button>
+                  </span>
+                ))}
               </div>
             </label>
           </div>
