@@ -233,9 +233,9 @@ const ManageListing = () => {
                   ))}
                 </select>
                 <div className="label">
-                  {errors.condition && (
+                  {errors.category && (
                     <span className="label-text-alt text-error">
-                      {errorMessages.condition[errors.condition?.type]}
+                      {errorMessages.category[errors.category?.type]}
                     </span>
                   )}
                 </div>
