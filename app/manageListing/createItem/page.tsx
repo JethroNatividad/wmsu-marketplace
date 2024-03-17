@@ -329,7 +329,7 @@ const ManageListing = () => {
                   onKeyDown={handleTagKeyDown}
                 />
               </div>
-              <div className="mt-2">
+              <div className="mt-3">
                 {tags.map((tag, index) => (
                   <span
                     key={index}
@@ -338,7 +338,20 @@ const ManageListing = () => {
                   >
                     {tag}
                     <button type="button" className="ml-2">
-                      x
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-4 h-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6 18 18 6M6 6l12 12"
+                        />
+                      </svg>
                     </button>
                   </span>
                 ))}
@@ -347,8 +360,10 @@ const ManageListing = () => {
           </div>
 
           <div className="space-x-3 flex justify-end mt-5">
-            <button className="btn btn-primary btn-outline">Discard</button>
-            <button type="submit" className="btn btn-primary">
+            <button className="btn btn-primary btn-outline w-24">
+              Discard
+            </button>
+            <button type="submit" className="btn btn-primary w-24">
               Submit
             </button>
           </div>
