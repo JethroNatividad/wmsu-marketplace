@@ -2,15 +2,15 @@
 
 import React from "react";
 import Navbar from "./Navbar";
-import useCategory from "@/hooks/useCategory";
 import Link from "next/link";
+import { useApp } from "@/store/app";
 
 const Layout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const { categories, categoriesError, categoriesLoading } = useCategory();
+  const { categories, categoriesLoading } = useApp();
   return (
     <>
       <Navbar />
