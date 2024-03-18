@@ -25,9 +25,30 @@ const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   const [loading, setLoading] = useState(true);
-  const [user, loadingUser, errorUser] = useAuthState(auth);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [errorUserData, setErrorUserData] = useState<Error | null>(null);
+  const [user, _, errorUser] = useAuthState(auth, {
+    onUserChanged: async (user) => {
+      try {
+        setLoading(true);
+        if (!user) {
+          setLoading(false);
+          return;
+        }
+        const data = await fetchUserData(user);
+        if (!data) {
+          setLoading(false);
+          return;
+        }
+        setUserData(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        setErrorUserData(error as Error);
+        setLoading(false);
+      }
+    },
+  });
 
   const fetchUserData = async (user: User): Promise<UserData | null> => {
     try {
@@ -42,33 +63,6 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
       throw error;
     }
   };
-
-  useEffect(() => {
-    const fn = async () => {
-      if (!user) {
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const data = await fetchUserData(user);
-        if (!data) {
-          setLoading(false);
-          return;
-        }
-        setUserData(data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        setErrorUserData(error as Error);
-        setLoading(false);
-      }
-    };
-
-    if (!loadingUser && !errorUser) {
-      fn();
-    }
-  }, [user, loadingUser, errorUser]);
 
   return (
     <AuthContext.Provider
