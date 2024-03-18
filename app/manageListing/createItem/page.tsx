@@ -5,6 +5,7 @@ import PageLoading from "@/components/PageLoading";
 import useAuthRedirect from "@/hooks/useAuthRedirect";
 import { useApp } from "@/store/app";
 import { useAuth } from "@/store/auth";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   LiteralUnion,
@@ -57,6 +58,7 @@ const errorMessages: ErrorMessages = {
 };
 
 const ManageListing = () => {
+  const router = useRouter();
   const { loading, userData, user } = useAuth();
   const {
     categories,
@@ -109,6 +111,10 @@ const ManageListing = () => {
 
   const removeTag = (tag: string) => {
     setTags(tags.filter((t) => t !== tag));
+  };
+
+  const handleDiscard = () => {
+    router.push("/manageListing");
   };
 
   if (loading || !userData?.completeSignUp || !user?.emailVerified) {
@@ -360,7 +366,11 @@ const ManageListing = () => {
           </div>
 
           <div className="space-x-3 flex justify-end mt-5">
-            <button className="btn btn-primary btn-outline w-24">
+            <button
+              onClick={handleDiscard}
+              type="button"
+              className="btn btn-primary btn-outline w-24"
+            >
               Discard
             </button>
             <button type="submit" className="btn btn-primary w-24">
