@@ -7,11 +7,11 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { auth, db } from "@/firebase";
+import { auth } from "@/firebase";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useRouter } from "next/navigation";
-import { UserData, userRef } from "@/models/User";
-import { doc, setDoc } from "firebase/firestore";
+import { userRef } from "@/models/User";
+import { setDoc } from "firebase/firestore";
 import Image from "next/image";
 import authHeroImage from "@/assets/images/auth-hero.png";
 import Link from "next/link";
