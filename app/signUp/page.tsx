@@ -8,7 +8,7 @@ import {
   useForm,
 } from "react-hook-form";
 import { auth } from "@/firebase";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { userRef } from "@/models/User";
 import { setDoc } from "firebase/firestore";
@@ -45,8 +45,6 @@ const errorMessages: ErrorMessages = {
 };
 
 const SignUp = () => {
-  const [createUserWithEmailAndPassword] =
-    useCreateUserWithEmailAndPassword(auth);
   const [sending, setSending] = useState(false);
   const router = useRouter();
 
@@ -69,23 +67,21 @@ const SignUp = () => {
     }
     setSending(true);
     try {
-      const userCredential = await createUserWithEmailAndPassword(
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
         email,
         password
       );
-      if (userCredential?.user) {
-        const { user } = userCredential;
-        // Store initial user data in Firestore
-        await setDoc(userRef(user.uid), {
-          email: user.email || "",
-          completeSignUp: false,
-          course: "",
-          firstName: "",
-          lastName: "",
-          middleName: "",
-          preferredCampus: "",
-        });
-      }
+      // Store initial user data in Firestore
+      await setDoc(userRef(user.uid), {
+        email: user.email || "",
+        completeSignUp: false,
+        course: "",
+        firstName: "",
+        lastName: "",
+        middleName: "",
+        preferredCampus: "",
+      });
 
       setSending(false);
       // Redirect to verify email
