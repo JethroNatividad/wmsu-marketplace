@@ -4,7 +4,7 @@ import { auth } from "@/firebase";
 import { UserData, userRef } from "@/models/User";
 import { User } from "firebase/auth";
 import { getDoc } from "firebase/firestore";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 type AuthContextType = {
