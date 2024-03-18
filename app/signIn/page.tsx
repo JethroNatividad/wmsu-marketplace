@@ -10,9 +10,9 @@ import {
   useForm,
 } from "react-hook-form";
 import { auth } from "@/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import authHeroImage from "@/assets/images/auth-hero.png";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 type Inputs = {
   email: string;
@@ -39,6 +39,7 @@ const errorMessages: ErrorMessages = {
 
 const SignIn = () => {
   const [sending, setSending] = useState(false);
+  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const router = useRouter();
   const {
     register,
@@ -50,7 +51,7 @@ const SignIn = () => {
   const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
     try {
       setSending(true);
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(email, password);
       setSending(false);
       router.push("/");
     } catch (error) {
