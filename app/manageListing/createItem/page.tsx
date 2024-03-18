@@ -389,14 +389,14 @@ const ManageListing = () => {
             <button
               onClick={handleDiscard}
               type="button"
-              className="btn btn-primary btn-outline w-24"
+              className="btn btn-primary btn-outline w-32"
             >
               Discard
             </button>
 
             <button
               disabled={loadingSubmit}
-              className="btn btn-primary w-24"
+              className="btn btn-primary w-32"
               type="submit"
             >
               Submit
