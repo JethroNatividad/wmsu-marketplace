@@ -24,7 +24,6 @@ type Inputs = {
   condition: string;
   description: string;
   campus: string;
-  tags: string[];
 };
 
 type ErrorOptionTypes = LiteralUnion<keyof RegisterOptions, string>;
@@ -53,9 +52,6 @@ const errorMessages: ErrorMessages = {
   },
   campus: {
     required: "Campus is required",
-  },
-  tags: {
-    required: "Tags is required",
   },
 };
 
@@ -97,7 +93,6 @@ const ManageListing = () => {
     condition,
     description,
     campus,
-    tags,
   }) => {
     try {
       setLoadingSubmit(true);
