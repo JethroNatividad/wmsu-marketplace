@@ -184,14 +184,10 @@ const ManageListing = () => {
                     <span className="label-text">Discount</span>
                   </div>
                   <input
-                    className={`input input-bordered w-full ${
-                      errors.discount && "input-error text-error"
-                    }`}
+                    className="input input-bordered w-full"
                     type="number"
                     placeholder="₱0"
-                    {...register("discount", {
-                      required: true,
-                    })}
+                    {...register("discount")}
                   />
                   <div className="label"></div>
                 </label>
