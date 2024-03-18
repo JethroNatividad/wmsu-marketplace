@@ -1,6 +1,8 @@
+import { createCollection } from "@/firebase";
 import { Campus } from "./Campus";
 import { Category } from "./Category";
 import { UserData } from "./User";
+import { doc } from "firebase/firestore";
 
 export interface Item {
   sellerId: string;
@@ -24,3 +26,7 @@ export interface PopulatedItem extends ItemWithId {
   category: Category;
   campus: Campus;
 }
+
+export const itemsRef = createCollection<Item>("items");
+
+export const itemRef = (uid: string) => doc(itemsRef, uid);
