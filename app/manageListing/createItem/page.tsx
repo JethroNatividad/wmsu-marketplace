@@ -112,6 +112,7 @@ const ManageListing = () => {
         });
       }
       // Redirect to manageListing
+      router.push("/manageListing");
       setLoadingSubmit(false);
     } catch (error) {
       setError("root", {
