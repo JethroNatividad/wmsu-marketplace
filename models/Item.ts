@@ -8,7 +8,7 @@ export interface Item {
   sellerId: string;
   itemName: string;
   price: number;
-  discount?: number;
+  discount: number;
   categoryId: string;
   condition: string;
   description: string;

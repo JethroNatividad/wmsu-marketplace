@@ -99,14 +99,14 @@ const ManageListing = () => {
     campus,
     tags,
   }) => {
-    if (user) {
-      try {
-        setLoadingSubmit(true);
+    try {
+      setLoadingSubmit(true);
+      if (user) {
         // Create item
         await addDoc(itemsRef, {
           itemName,
           price,
-          discount,
+          discount: discount || 0,
           categoryId: category,
           condition,
           description,
@@ -115,15 +115,16 @@ const ManageListing = () => {
           sellerId: user.uid,
           images: [],
         });
-        // Redirect to manageListing
-        setLoadingSubmit(false);
-      } catch (error) {
-        setError("root", {
-          type: "server",
-          message: (error as Error).message,
-        });
-        setLoadingSubmit(false);
       }
+      // Redirect to manageListing
+      setLoadingSubmit(false);
+    } catch (error) {
+      setError("root", {
+        type: "server",
+        message: (error as Error).message,
+      });
+      console.log(error);
+      setLoadingSubmit(false);
     }
   };
 
@@ -397,8 +398,16 @@ const ManageListing = () => {
             >
               Discard
             </button>
-            <button type="submit" className="btn btn-primary w-24">
+
+            <button
+              disabled={loadingSubmit}
+              className="btn btn-primary w-24"
+              type="submit"
+            >
               Submit
+              {loadingSubmit && (
+                <span className="loading loading-spinner"></span>
+              )}
             </button>
           </div>
         </form>
