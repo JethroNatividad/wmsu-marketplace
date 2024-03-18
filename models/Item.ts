@@ -1,25 +1,26 @@
-import { UserInfo } from "firebase/auth";
-
-// Item:
-// seller: sellerId
-// Item name: string
-// price: number
-// discount: number
-// category:
-// condition: New, used - like new, used - good, used - fair
-// Description: string
-// campus: Main Campus A, Main Campus B
-// tags: [string]
+import { Campus } from "./Campus";
+import { Category } from "./Category";
+import { UserData } from "./User";
 
 export interface Item {
-  seller: string;
+  sellerId: string;
   itemName: string;
   price: number;
   discount?: number;
-  category: string;
+  categoryId: string;
   condition: string;
   description: string;
-  campus: string;
+  campusId: string;
   tags: string[];
   images: string[];
+}
+
+export interface ItemWithId extends Item {
+  id: string;
+}
+
+export interface PopulatedItem extends ItemWithId {
+  seller: Omit<UserData, "completeSignUp" | "email">;
+  category: Category;
+  campus: Campus;
 }
