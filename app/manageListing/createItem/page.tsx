@@ -3,8 +3,10 @@
 import Layout from "@/components/Layout";
 import PageLoading from "@/components/PageLoading";
 import useAuthRedirect from "@/hooks/useAuthRedirect";
+import { itemsRef } from "@/models/Item";
 import { useApp } from "@/store/app";
 import { useAuth } from "@/store/auth";
+import { addDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
@@ -69,6 +71,7 @@ const ManageListing = () => {
     campusesLoading,
   } = useApp();
   const [tags, setTags] = useState<string[]>([]);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
 
   const conditions = {
     new: "New",
@@ -86,15 +89,41 @@ const ManageListing = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = async () => {
-    try {
-      //   await signInWithEmailAndPassword(auth, email, password);
-      //   router.push("/");
-    } catch (error) {
-      setError("root", {
-        type: "server",
-        message: (error as Error).message,
-      });
+  const onSubmit: SubmitHandler<Inputs> = async ({
+    itemName,
+    price,
+    discount,
+    category,
+    condition,
+    description,
+    campus,
+    tags,
+  }) => {
+    if (user) {
+      try {
+        setLoadingSubmit(true);
+        // Create item
+        await addDoc(itemsRef, {
+          itemName,
+          price,
+          discount,
+          categoryId: category,
+          condition,
+          description,
+          campusId: campus,
+          tags,
+          sellerId: user.uid,
+          images: [],
+        });
+        // Redirect to manageListing
+        setLoadingSubmit(false);
+      } catch (error) {
+        setError("root", {
+          type: "server",
+          message: (error as Error).message,
+        });
+        setLoadingSubmit(false);
+      }
     }
   };
 
