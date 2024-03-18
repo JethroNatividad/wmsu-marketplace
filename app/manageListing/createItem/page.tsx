@@ -124,7 +124,6 @@ const ManageListing = () => {
   return (
     <Layout>
       <main className="p-5">
-        <p>{userData?.firstName}</p>
         <h1 className="text-2xl font-bold">New Item For Sale</h1>
         <form
           className="w-full px-5 py-10 lg:py-0"
