@@ -31,7 +31,9 @@ const VerifyEmail = () => {
   const handleSendEmailVerification = async () => {
     if (user) {
       setSending(true);
-      await sendEmailVerification(user);
+      await sendEmailVerification(user, {
+        url: `${window.location.origin}/completeSignUp`,
+      });
       setSending(false);
       setSent(true);
     }
