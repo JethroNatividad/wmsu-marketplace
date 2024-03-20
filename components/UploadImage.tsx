@@ -33,7 +33,7 @@ const UploadImage = () => {
         }`}
       >
         <input {...getInputProps()} />
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4 grid-rows-3">
           {uploadedImages.map((file, index) => (
             <div key={file.name} className="relative">
               <img
