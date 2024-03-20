@@ -42,7 +42,11 @@ const UploadImage = () => {
                 className="w-full h-32 object-cover rounded-md"
               />
               <button
-                onClick={() => removeImage(index)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  removeImage(index);
+                }}
                 className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
               >
                 <svg
