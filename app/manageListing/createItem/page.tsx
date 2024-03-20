@@ -2,6 +2,7 @@
 
 import Layout from "@/components/Layout";
 import PageLoading from "@/components/PageLoading";
+import UploadImage from "@/components/UploadImage";
 import useAuthRedirect from "@/hooks/useAuthRedirect";
 import { itemsRef } from "@/models/Item";
 import { useApp } from "@/store/app";
@@ -156,7 +157,9 @@ const ManageListing = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="flex flex-col lg:flex-row ">
-            <div className="w-full lg:w-1/2">Image</div>
+            <div className="w-full lg:w-1/2">
+              <UploadImage />
+            </div>
             <div className="w-full lg:w-1/2">
               <label className="form-control w-full">
                 <div className="label">
