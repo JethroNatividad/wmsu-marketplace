@@ -25,10 +25,10 @@ const UploadImage = () => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full">
       <div
         {...getRootProps()}
-        className={`border-2 border-dashed border-gray-400 p-4 rounded-md w-full h-full ${
+        className={`border-2 border-dashed border-gray-400 p-4 rounded-md w-full h-full max-h-[400px] ${
           isDragActive ? "bg-gray-100" : ""
         }`}
       >

@@ -156,7 +156,7 @@ const ManageListing = () => {
           className="w-full px-5 py-10 lg:py-0"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className="flex flex-col lg:flex-row ">
+          <div className="flex flex-col lg:flex-row lg:space-x-5">
             <div className="w-full lg:w-1/2">
               <UploadImage />
             </div>
